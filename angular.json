@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "visual-analytics": "apps/visual-analytics",
+    "visual-analytics-e2e": "apps/visual-analytics-e2e"
+  }
+}
