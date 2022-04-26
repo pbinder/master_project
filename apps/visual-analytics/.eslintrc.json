@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "master",
+            "prefix": "visualAnalytics",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "master",
+            "prefix": "visual-analytics",
             "style": "kebab-case"
           }
         ]

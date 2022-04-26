@@ -1,7 +1,7 @@
 {
-  "npmScope": "master",
+  "npmScope": "visual-analytics",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "development"
   },
   "cli": {
     "defaultCollection": "@nrwl/angular",
@@ -24,7 +24,7 @@
           "test",
           "e2e"
         ],
-        "accessToken": "YWQyNDVmMTYtMmMxOS00ZTkxLWJiYTAtNjdlZTA4MzE3YzY2fHJlYWQtd3JpdGU="
+        "accessToken": "YjMyOWEzOWItNTMzYy00YmJiLTlmOGItMzU0ZTBhMjVmM2FkfHJlYWQtd3JpdGU="
       }
     }
   },

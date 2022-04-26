@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "types": ["node"],
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
@@ -15,13 +16,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "path":["node_modules/path-browserify"],
-      "querystring":["node_modules/querystring-es3"],
-      "util":["node_modules/util"],
-      "assert":["node_modules/assert"],
-      "url":["node_modules/url"],
-      "crypto":["node_modules/crypto-browserify"],
-      "stream":["node_modules/stream-browserify"]
+      "@visual-analytics/frontpage/data-access": [
+        "libs/frontpage/data-access/src/index.ts"
+      ],
+      "@visual-analytics/frontpage/dto": ["libs/frontpage/dto/src/index.ts"],
+      "@visual-analytics/frontpage/feature/front-page": [
+        "libs/frontpage/feature/front-page/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
