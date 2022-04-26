@@ -14,7 +14,15 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "path":["node_modules/path-browserify"],
+      "querystring":["node_modules/querystring-es3"],
+      "util":["node_modules/util"],
+      "assert":["node_modules/assert"],
+      "url":["node_modules/url"],
+      "crypto":["node_modules/crypto-browserify"],
+      "stream":["node_modules/stream-browserify"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

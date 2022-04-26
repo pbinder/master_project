@@ -3,5 +3,12 @@
   "projects": {
     "visual-analytics": "apps/visual-analytics",
     "visual-analytics-e2e": "apps/visual-analytics-e2e"
-  }
+  },
+  "architect": {
+    "build": {
+      "options": {
+        "allowedCommonJsDependencies": ["path-browserify","querystring-es3", "util", "assert", "url", "crypto-browserify", "stream-browserify"]
+      }
+    }
+}
 }
