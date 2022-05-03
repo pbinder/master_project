@@ -2,7 +2,7 @@
   "projectType": "application",
   "root": "apps/visual-analytics",
   "sourceRoot": "apps/visual-analytics/src",
-  "prefix": "master",
+  "prefix": "visual-analytics",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -64,7 +64,10 @@
           "browserTarget": "visual-analytics:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "options": {
+        "proxyConfig": "apps/visual-analytics/proxy.conf.json"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -76,8 +79,8 @@
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "apps/visual-analytics/src/**/*.ts",
-          "apps/visual-analytics/src/**/*.html"
+          "apps/visual-analytics/**/*.ts",
+          "apps/visual-analytics/**/*.html"
         ]
       }
     },
@@ -85,7 +88,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/visual-analytics"],
       "options": {
-        "jestConfig": "apps/visual-analytics/jest.config.js",
+        "jestConfig": "apps/visual-analytics/jest.config.ts",
         "passWithNoTests": true
       }
     }

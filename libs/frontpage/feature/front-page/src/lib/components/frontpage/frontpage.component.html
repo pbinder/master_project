@@ -1,0 +1,29 @@
+<div *ngIf="summoner && gameData">
+
+  <img class="background" [src]='image' >
+  <div>
+
+    <h1>
+      {{summoner.name}}
+    </h1>
+
+    <div *ngFor="let tip of championInfo?.allytips">
+      <p>
+        {{tip}}
+      </p>
+      <br>
+    </div>
+
+    <div *ngFor="let tip of championInfo?.enemytips">
+      <p>
+        {{tip}}
+      </p>
+      <br>
+    </div>
+
+  </div>
+
+</div>
+
+
+

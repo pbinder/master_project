@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/frontpage/feature/front-page",
+  "sourceRoot": "libs/frontpage/feature/front-page/src",
+  "prefix": "lib",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/frontpage/feature/front-page"],
+      "options": {
+        "jestConfig": "libs/frontpage/feature/front-page/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/frontpage/feature/front-page/**/*.ts",
+          "libs/frontpage/feature/front-page/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["scope:frontpage", "type:feature"]
+}

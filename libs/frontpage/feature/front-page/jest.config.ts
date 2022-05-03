@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'visual-analytics',
-  preset: '../../jest.preset.js',
+  displayName: 'frontpage-feature-front-page',
+  preset: '../../../../jest.preset.ts',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -8,7 +8,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/visual-analytics',
+  coverageDirectory: '../../../../coverage/libs/frontpage/feature/front-page',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
