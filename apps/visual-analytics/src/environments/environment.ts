@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  RIOT_LOL_API_KEY: 'RGAPI-94856a94-5d0f-4a2c-9f60-050073388495'
+	production: false,
+	RIOT_LOL_API_KEY: "RGAPI-67f79207-24d9-45b3-961b-8d211efd5158",
 };
 
 /*

@@ -1,32 +1,30 @@
-
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ChampionList, LiveGameData, Summoner } from '@visual-analytics/frontpage/dto';
+import {Injectable} from "@angular/core";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {ChampionList, LiveGameData, Summoner} from "@visual-analytics/frontpage/dto";
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: "root",
 })
 export class AccountDataService {
-  url = '/api/';
+	url = "/api/";
 
-  constructor(private httpClient: HttpClient) { }
+	constructor(private httpClient: HttpClient) {}
 
-  getSummoner() : Observable<Summoner>{
-    return this.httpClient.get<Summoner>(this.url +'getSummonerByName')
-  }
+	getSummoner(): Observable<Summoner> {
+		return this.httpClient.get<Summoner>(this.url + "getSummonerByName");
+	}
 
-  getAllChampions() : Observable<ChampionList>{
-    return this.httpClient.get<ChampionList>(this.url +'getAllChampions')
-  }
+	getAllChampions(): Observable<ChampionList> {
+		return this.httpClient.get<ChampionList>(this.url + "getAllChampions");
+	}
 
-  getChampion(championName: string) : Observable<ChampionList>{
-    const params: HttpParams = new HttpParams().set('championName', championName);
+	getChampion(championName: string): Observable<ChampionList> {
+		const params: HttpParams = new HttpParams().set("championName", championName);
+		return this.httpClient.get<ChampionList>(this.url + "getChampionByName", {params});
+	}
 
-    return this.httpClient.get<ChampionList>(this.url +'getChampionByName', {params})
-  }
-
-  getLiveMatchData() : Observable<LiveGameData>{
-    return this.httpClient.get<LiveGameData>(this.url +'getLiveMatchData')
-  }
+	getLiveMatchData(): Observable<LiveGameData> {
+		return this.httpClient.get<LiveGameData>(this.url + "getLiveMatchData");
+	}
 }

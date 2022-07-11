@@ -1,29 +1,27 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "types": ["node"],
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@visual-analytics/frontpage/data-access": [
-        "libs/frontpage/data-access/src/index.ts"
-      ],
-      "@visual-analytics/frontpage/dto": ["libs/frontpage/dto/src/index.ts"],
-      "@visual-analytics/frontpage/feature/front-page": [
-        "libs/frontpage/feature/front-page/src/index.ts"
-      ]
-    }
-  },
-  "exclude": ["node_modules", "tmp"]
+	"compileOnSave": false,
+	"compilerOptions": {
+		"types": ["node"],
+		"rootDir": ".",
+		"sourceMap": true,
+		"declaration": false,
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"target": "es2015",
+		"module": "esnext",
+		"lib": ["es2017", "dom"],
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"baseUrl": ".",
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"paths": {
+			"@visual-analytics/frontpage/data-access": ["libs/frontpage/data-access/src/index.ts"],
+			"@visual-analytics/frontpage/dto": ["libs/frontpage/dto/src/index.ts"],
+			"@visual-analytics/frontpage/feature/front-page": ["libs/frontpage/feature/front-page/src/index.ts"]
+		}
+	},
+	"exclude": ["node_modules", "tmp"]
 }

@@ -1,5 +1,46 @@
 .background {
-  position: absolute;
-  z-index: -1;
-  width: 200px;
+}
+
+.championTile {
+	position: absolute;
+	z-index: 500;
+	width: 150px;
+	top: 40px;
+	right: 40px;
+	padding: 10px;
+}
+
+.title {
+	text-align: center;
+}
+
+.overViewCard {
+	display: flex;
+	.scoresCard {
+		.scores {
+			width: 150px;
+			padding: 10px;
+			column-gap: 10px;
+		}
+	}
+	.runeCard {
+		.rune {
+			display: flex;
+			width: 60%;
+			padding: 10px;
+			column-gap: 10px;
+			.runeImg {
+				width: 50px;
+				height: 50px;
+				padding: 10px;
+			}
+		}
+	}
+
+	.tipsCard {
+		.tipsForAgainst {
+			width: 60%;
+			padding: 5px;
+		}
+	}
 }
