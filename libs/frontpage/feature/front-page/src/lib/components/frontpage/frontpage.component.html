@@ -1,57 +1,78 @@
 <div class="background" *ngIf="summoner && gameData">
-	<mat-card>
-		<img mat-card-image class="championTile" [src]="image" />
-		<h1 class="title">{{ summoner?.name }} playing as {{ championInfo?.name }}</h1>
-		<mat-card class="overViewCard">
-			<mat-card class="scoresCard">
-				<div class="scores">
-					<p>{{ scores?.kills }} Kills</p>
-					<p>{{ scores?.deaths }} Deaths</p>
-					<p>{{ scores?.assists }} Assists</p>
-					<p>{{ scores?.creepScore }} Minionscore</p>
-					<p>{{ scores?.wardScore }} WardScore</p>
-					<br />
+	<div class="mainCard">
+		<div class="header" fxLayout="row">
+			<div class="scoresCard" fxLayout="row" fxLayoutAlign="space-between">
+				<p>WardScore <br />{{ scores?.wardScore }}</p>
+				<p>Minionscore <br />{{ scores?.creepScore }}</p>
+				<p>
+					K / D / A <br />
+					{{ scores?.kills }} / {{ scores?.deaths }} / {{ scores?.assists }}
+				</p>
+				<p>Time <br />{{ currentTime | number: "1.0-2" }}</p>
+			</div>
+			<h1 class="title" fxFlex>{{ summoner?.name }} playing as {{ championInfo?.name }}</h1>
+			<img mat-card-image class="championTile" [src]="image" />
+		</div>
+
+		<mat-card class="overViewCard" fxLayout="row" fxLayoutAlign="space-between">
+			<div fxFlex fxLayout="column">
+				<div class="guides" *ngIf="champions.length > 0">
+					<lib-champion-guide [champions]="champions" [gameTime]="gametime"> </lib-champion-guide>
 				</div>
-			</mat-card>
-			<br />
-			<mat-card class="runeCard">
-				<div class="rune" *ngFor="let rune of activeChampionRunes">
-					<img class="runeImg" [src]="rune?.iconPath" />
-					<p>
-						{{ rune?.name }}
-					</p>
-					<p>
-						{{ rune?.shortDesc }}
-					</p>
-					<br />
-				</div>
-			</mat-card>
-			<br />
-			<mat-card class="tipsCard">
-				<div class="tipsForAgainst">
-					<p>Strengths of {{ championInfo?.name }}:</p>
-					<p>
-						{{ guide?.strengths }}
-					</p>
-				</div>
-				<br />
-				<div class="tipsForAgainst">
-					<p>Weaknesses of {{ championInfo?.name }}:</p>
-					<p>
-						{{ guide?.weaknesses }}
-					</p>
-				</div>
-				<br />
-				<div class="tipsForCurrentGame">
-					<p>Gameplan and Powerspikes of {{ championInfo?.name }}:</p>
-					<p>
-						{{ guide?.gameplan?.[gametime] }}
-					</p>
-					<p>
-						{{ guide?.powerspikes?.[gametime] }}
-					</p>
-				</div>
-			</mat-card>
+				<mat-accordion>
+					<mat-expansion-panel class="objectives" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Objectives</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						TBD
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+
+			<div fxFlex fxLayout="column">
+				<mat-accordion>
+					<mat-expansion-panel class="runeCard" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Runes</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<div class="rune" *ngFor="let rune of activeChampionRunes">
+							<img class="runeImg" [src]="rune?.iconPath" />
+							<p>
+								{{ rune?.name }}
+							</p>
+							<p>
+								{{ rune?.shortDesc }}
+							</p>
+							<br />
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+
+				<mat-accordion>
+					<mat-expansion-panel class="wardingPatterns" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Warding</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						TBD
+					</mat-expansion-panel>
+				</mat-accordion>
+				<mat-accordion>
+					<mat-expansion-panel class="goldIncome" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Gold Income</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						TBD
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
 		</mat-card>
-	</mat-card>
+	</div>
 </div>

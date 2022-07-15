@@ -5,9 +5,18 @@ import {RouterModule} from "@angular/router";
 import {ROUTES} from "./routes/routes";
 import {COMPONENTS} from "./components/components";
 import {FormsModule} from "@angular/forms";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 @NgModule({
 	declarations: COMPONENTS,
-	imports: [CommonModule, FormsModule, RouterModule.forChild(ROUTES), MatCardModule],
+	imports: [
+		CommonModule,
+		FlexLayoutModule,
+		FormsModule,
+		RouterModule.forChild(ROUTES),
+		MatCardModule,
+		MatExpansionModule,
+	],
 })
 export class FrontpageFeatureFrontPageModule {}

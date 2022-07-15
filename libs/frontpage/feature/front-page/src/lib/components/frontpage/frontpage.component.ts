@@ -11,7 +11,6 @@ import {
 	CommunityDragonRune,
 	LiveRune,
 	LiveScores,
-	ChampionGuides,
 	ChampionGuide,
 } from "@visual-analytics/frontpage/dto";
 import {interval, startWith, switchMap, take} from "rxjs";
@@ -25,7 +24,7 @@ import {DataDragonService} from "../../services/data-dragon.service";
 })
 export class FrontpageComponent implements OnInit {
 	summoner!: Summoner;
-	champions!: ChampionList;
+	champions: string[] = [];
 	gameData!: LiveGameData;
 	championInfo!: BasicChampion;
 	activePlayer!: ActivePlayerData;
@@ -34,8 +33,8 @@ export class FrontpageComponent implements OnInit {
 	guide!: ChampionGuide;
 	scores!: LiveScores;
 	gametime = "early";
-
 	image = "";
+	currentTime!: number;
 
 	constructor(
 		private readonly accountDataService: AccountDataService,
@@ -60,18 +59,15 @@ export class FrontpageComponent implements OnInit {
 			)
 			.subscribe((gameData: LiveGameData) => {
 				this.gameData = gameData;
+
 				this.activePlayer = gameData.activePlayer;
-				this.gametime =
-					this.gameData.gameData.gameTime / 60 < 25
-						? this.gameData.gameData.gameTime / 60 < 15
-							? "early"
-							: "mid"
-						: "late";
+				this.currentTime = this.gameData.gameData.gameTime / 60;
+				this.gametime = this.currentTime < 25 ? (this.currentTime < 15 ? "early" : "mid") : "late";
+				console.log("game", gameData);
 				this.gameData.allPlayers.forEach((player: LivePlayerData) => {
 					if (player.summonerName == this.summoner?.name) {
 						this.scores = player.scores;
 					}
-					console.log("game", gameData);
 				});
 			});
 	}
@@ -85,9 +81,9 @@ export class FrontpageComponent implements OnInit {
 				this.activePlayer = gameData.activePlayer;
 				this.getMatchedRunes();
 				gameData?.allPlayers.forEach((player: LivePlayerData) => {
+					this.champions.push(player.championName);
 					if (player?.summonerName === this.summoner?.name) {
 						this.scores = player.scores;
-						this.guide = ChampionGuides[player?.championName.toLowerCase()];
 						this.accountDataService
 							.getChampion(player.championName)
 							.pipe(take(1))
@@ -101,7 +97,6 @@ export class FrontpageComponent implements OnInit {
 									this.championInfo.id,
 									currentSkin?.num
 								);
-								console.log("CHAMP", this.championInfo);
 							});
 					}
 				});
