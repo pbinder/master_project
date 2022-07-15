@@ -1,13 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { RouterModule } from '@angular/router';
-import { ROUTES } from './routes/routes';
-import { COMPONENTS } from './components/components';
-import { FormsModule } from '@angular/forms';
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {MatCardModule} from "@angular/material/card";
+import {RouterModule} from "@angular/router";
+import {ROUTES} from "./routes/routes";
+import {COMPONENTS} from "./components/components";
+import {FormsModule} from "@angular/forms";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 @NgModule({
-  declarations: COMPONENTS,
-  imports: [CommonModule, FormsModule, RouterModule.forChild(ROUTES)],
+	declarations: COMPONENTS,
+	imports: [
+		CommonModule,
+		FlexLayoutModule,
+		FormsModule,
+		RouterModule.forChild(ROUTES),
+		MatCardModule,
+		MatExpansionModule,
+	],
 })
 export class FrontpageFeatureFrontPageModule {}

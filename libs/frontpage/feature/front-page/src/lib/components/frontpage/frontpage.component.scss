@@ -1,5 +1,127 @@
 .background {
-  position: absolute;
-  z-index: -1;
-  width: 200px;
+	background-color: rgba(0, 50, 40, 0.9);
+	height: 100%;
+	overflow-y: auto;
+}
+
+.mainCard {
+	width: 99%;
+	padding: 10px;
+}
+
+.scoresCard {
+	width: 20%;
+	padding: 5px;
+	margin-left: 10px;
+}
+
+.championTile {
+	position: absolute;
+	z-index: 500;
+	width: 150px;
+	right: 40px;
+	border: solid 1px rgba(236, 173, 12, 0.7);
+	border-radius: 10px;
+}
+
+.header {
+	padding: 10px;
+	margin-bottom: 10px;
+	background-color: rgba(0, 65, 50, 0.8);
+	border: solid 1px rgba(236, 173, 12, 0.7);
+	color: rgba(255, 255, 255, 0.8);
+	border-radius: 10px;
+
+	.title {
+		margin-left: 450px;
+		align-self: center;
+	}
+}
+
+.overViewCard {
+	display: flex;
+	padding: 15px;
+	width: 100%;
+	border: solid 1px rgba(236, 173, 12, 0.7);
+	border-radius: 10px;
+	background-color: rgba(0, 65, 50, 0.8);
+
+	.scoresCard {
+		.scores {
+			width: 150px;
+			padding: 10px;
+			column-gap: 10px;
+		}
+	}
+
+	.guides {
+		width: 80%;
+		margin-bottom: 10px;
+	}
+
+	.runeCard {
+		width: 80%;
+		margin-bottom: 10px;
+		border: solid 1px rgba(236, 173, 12, 0.7);
+		border-radius: 10px;
+		background-color: rgba(0, 50, 40, 0.9);
+		color: rgba(255, 255, 255, 0.8);
+
+		mat-panel-title {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 17px;
+		}
+
+		.rune {
+			display: flex;
+			padding: 10px;
+			column-gap: 10px;
+			.runeImg {
+				width: 50px;
+				height: 50px;
+				padding: 10px;
+			}
+		}
+	}
+
+	.objectives {
+		width: 80%;
+		border: solid 1px rgba(236, 173, 12, 0.7);
+		border-radius: 10px;
+		background-color: rgba(0, 50, 40, 0.9);
+		color: rgba(255, 255, 255, 0.8);
+
+		mat-panel-title {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 17px;
+		}
+	}
+
+	.wardingPatterns {
+		width: 80%;
+		margin-bottom: 10px;
+		border: solid 1px rgba(236, 173, 12, 0.7);
+		border-radius: 10px;
+		background-color: rgba(0, 50, 40, 0.9);
+		color: rgba(255, 255, 255, 0.8);
+
+		mat-panel-title {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 17px;
+		}
+	}
+
+	.goldIncome {
+		width: 80%;
+		margin-bottom: 10px;
+		border: solid 1px rgba(236, 173, 12, 0.7);
+		border-radius: 10px;
+		background-color: rgba(0, 50, 40, 0.9);
+		color: rgba(255, 255, 255, 0.8);
+
+		mat-panel-title {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 17px;
+		}
+	}
 }

@@ -1,29 +1,78 @@
-<div *ngIf="summoner && gameData">
+<div class="background" *ngIf="summoner && gameData">
+	<div class="mainCard">
+		<div class="header" fxLayout="row">
+			<div class="scoresCard" fxLayout="row" fxLayoutAlign="space-between">
+				<p>WardScore <br />{{ scores?.wardScore }}</p>
+				<p>Minionscore <br />{{ scores?.creepScore }}</p>
+				<p>
+					K / D / A <br />
+					{{ scores?.kills }} / {{ scores?.deaths }} / {{ scores?.assists }}
+				</p>
+				<p>Time <br />{{ currentTime | number: "1.0-2" }}</p>
+			</div>
+			<h1 class="title" fxFlex>{{ summoner?.name }} playing as {{ championInfo?.name }}</h1>
+			<img mat-card-image class="championTile" [src]="image" />
+		</div>
 
-  <img class="background" [src]='image' >
-  <div>
+		<mat-card class="overViewCard" fxLayout="row" fxLayoutAlign="space-between">
+			<div fxFlex fxLayout="column">
+				<div class="guides" *ngIf="champions.length > 0">
+					<lib-champion-guide [champions]="champions" [gameTime]="gametime"> </lib-champion-guide>
+				</div>
+				<mat-accordion>
+					<mat-expansion-panel class="objectives" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Objectives</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						TBD
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
 
-    <h1>
-      {{summoner.name}}
-    </h1>
+			<div fxFlex fxLayout="column">
+				<mat-accordion>
+					<mat-expansion-panel class="runeCard" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Runes</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<div class="rune" *ngFor="let rune of activeChampionRunes">
+							<img class="runeImg" [src]="rune?.iconPath" />
+							<p>
+								{{ rune?.name }}
+							</p>
+							<p>
+								{{ rune?.shortDesc }}
+							</p>
+							<br />
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
 
-    <div *ngFor="let tip of championInfo?.allytips">
-      <p>
-        {{tip}}
-      </p>
-      <br>
-    </div>
-
-    <div *ngFor="let tip of championInfo?.enemytips">
-      <p>
-        {{tip}}
-      </p>
-      <br>
-    </div>
-
-  </div>
-
+				<mat-accordion>
+					<mat-expansion-panel class="wardingPatterns" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Warding</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						TBD
+					</mat-expansion-panel>
+				</mat-accordion>
+				<mat-accordion>
+					<mat-expansion-panel class="goldIncome" hideToggle>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								<p>Gold Income</p>
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						TBD
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+		</mat-card>
+	</div>
 </div>
-
-
-
