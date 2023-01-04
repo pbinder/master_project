@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, Input, OnInit} from "@angular/core";
-import {ChampionGuides, ChampionGuide} from "@visual-analytics/frontpage/dto";
+import {AfterViewInit, Component, Input} from "@angular/core";
+import {ChampionGuides, ChampionGuide, GameState, BasicChampion} from "@visual-analytics/frontpage/dto";
 
 @Component({
 	selector: "lib-champion-guide",
@@ -8,20 +8,20 @@ import {ChampionGuides, ChampionGuide} from "@visual-analytics/frontpage/dto";
 })
 export class ChampionGuideComponent implements AfterViewInit {
 	@Input() champions!: string[];
-	@Input() gameTime!: string;
+	@Input() championInfos!: BasicChampion[];
+	@Input() gameState!: GameState;
 
 	guides: ChampionGuide[] = [];
 	championIcons: string[] = [];
 
 	ngAfterViewInit(): void {
-		console.log(this.champions, this.gameTime);
 		this.getChampionGuides();
 	}
 
 	getChampionGuides(): void {
 		this.champions?.forEach((champion: string) => {
 			this.guides.push(ChampionGuides[champion.toLowerCase()]);
-			this.championIcons.push(`assets/resources/dragontail/12.6.1/img/champion/${champion}.png`);
+			this.championIcons.push(`assets/resources/dragontail/12.20.1/img/champion/${champion}.png`);
 		});
 	}
 }

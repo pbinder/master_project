@@ -1,13 +1,32 @@
-<div *ngFor="let champion of champions; let i = index">
+<div *ngFor="let champion of championInfos; let i = index">
 	<mat-accordion>
 		<mat-expansion-panel hideToggle>
 			<mat-expansion-panel-header>
 				<mat-panel-title>
 					<img class="championIcon" [src]="championIcons[i]" />
-					<p>{{ champion }}</p>
-					<p fxFlex fxLayoutAlign="flex-end">Strengths/ Weaknesses Gameplan and Powerspikes</p>
+					<p>{{ champion.name }}</p>
 				</mat-panel-title>
 			</mat-expansion-panel-header>
+
+			<div class="tipsForAgainst">
+				<h4>Playing with {{ champion.name }}:</h4>
+				<ul *ngFor="let tip of champion.allytips">
+					<li>
+						{{ tip }}
+					</li>
+				</ul>
+			</div>
+			<br />
+			<div class="tipsForAgainst">
+				<h4>Playing against {{ champion.name }}:</h4>
+				<ul *ngFor="let tip of champion.enemytips">
+					<li>
+						{{ tip }}
+					</li>
+				</ul>
+			</div>
+			<!--
+
 			<div class="tipsForAgainst">
 				<h4>Strengths of {{ champion }}:</h4>
 				<p>
@@ -22,15 +41,18 @@
 				</p>
 			</div>
 			<br />
-			<div class="tipsForCurrentGame">
-				<h4>Gameplan and Powerspikes of {{ champion }}:</h4>
-				<p>
-					{{ guides[i]?.gameplan?.[gameTime] }}
-				</p>
-				<p>
-					{{ guides[i]?.powerspikes?.[gameTime] }}
-				</p>
-			</div>
+
+
+        <div class="tipsForCurrentGame">
+          <h4>Gameplan and Powerspikes of {{ champion }}:</h4>
+          <p>
+            {{ guides[i]?.gameplan?.[gameState] }}
+          </p>
+          <p>
+            {{ guides[i]?.powerspikes?.[gameState] }}
+          </p>
+        </div>
+      -->
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>

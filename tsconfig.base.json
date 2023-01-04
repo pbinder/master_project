@@ -23,5 +23,8 @@
 			"@visual-analytics/frontpage/feature/front-page": ["libs/frontpage/feature/front-page/src/index.ts"]
 		}
 	},
+	"angularCompilerOptions": {
+		"strictTemplates": true
+	},
 	"exclude": ["node_modules", "tmp"]
 }

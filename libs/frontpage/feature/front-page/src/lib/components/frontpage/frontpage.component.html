@@ -2,23 +2,27 @@
 	<div class="mainCard">
 		<div class="header" fxLayout="row">
 			<div class="scoresCard" fxLayout="row" fxLayoutAlign="space-between">
-				<p>WardScore <br />{{ scores?.wardScore }}</p>
-				<p>Minionscore <br />{{ scores?.creepScore }}</p>
+				<p style="text-align: center">WardScore <br />{{ scores?.wardScore }}</p>
+				<p style="text-align: center">Minionscore <br />{{ scores?.creepScore }}</p>
 				<p>
 					K / D / A <br />
 					{{ scores?.kills }} / {{ scores?.deaths }} / {{ scores?.assists }}
 				</p>
-				<p>Time <br />{{ currentTime | number: "1.0-2" }}</p>
+				<p>Time <br />{{ currentTime }}</p>
 			</div>
-			<h1 class="title" fxFlex>{{ summoner?.name }} playing as {{ championInfo?.name }}</h1>
+			<h1 class="title" fxFlex>{{ summoner.name }} playing as {{ championInfo.name }}</h1>
 			<img mat-card-image class="championTile" [src]="image" />
 		</div>
 
 		<mat-card class="overViewCard" fxLayout="row" fxLayoutAlign="space-between">
 			<div fxFlex fxLayout="column">
 				<div class="guides" *ngIf="champions.length > 0">
-					<lib-champion-guide [champions]="champions" [gameTime]="gametime"> </lib-champion-guide>
+					<lib-champion-guide [champions]="champions" [championInfos]="championInfos" [gameState]="gameState">
+					</lib-champion-guide>
 				</div>
+			</div>
+
+			<div fxFlex fxLayout="column">
 				<mat-accordion>
 					<mat-expansion-panel class="objectives" hideToggle>
 						<mat-expansion-panel-header>
@@ -26,52 +30,23 @@
 								<p>Objectives</p>
 							</mat-panel-title>
 						</mat-expansion-panel-header>
-						TBD
-					</mat-expansion-panel>
-				</mat-accordion>
-			</div>
-
-			<div fxFlex fxLayout="column">
-				<mat-accordion>
-					<mat-expansion-panel class="runeCard" hideToggle>
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								<p>Runes</p>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
-						<div class="rune" *ngFor="let rune of activeChampionRunes">
-							<img class="runeImg" [src]="rune?.iconPath" />
-							<p>
-								{{ rune?.name }}
-							</p>
-							<p>
-								{{ rune?.shortDesc }}
-							</p>
-							<br />
-						</div>
+						<lib-objectives [gameState]="gameState"></lib-objectives>
 					</mat-expansion-panel>
 				</mat-accordion>
 
-				<mat-accordion>
-					<mat-expansion-panel class="wardingPatterns" hideToggle>
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								<p>Warding</p>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
-						TBD
-					</mat-expansion-panel>
-				</mat-accordion>
-				<mat-accordion>
-					<mat-expansion-panel class="goldIncome" hideToggle>
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								<p>Gold Income</p>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
-						TBD
-					</mat-expansion-panel>
-				</mat-accordion>
+				<lib-warding
+					[playerLane]="playerLane"
+					[gameState]="gameState"
+					[laneState]="laneState"
+					[side]="side"
+				></lib-warding>
+
+				<lib-gold-income
+					[gameState]="gameState"
+					[gameTimeInSeconds]="gameTimeInSeconds"
+					[creepScore]="scores?.creepScore"
+					[goldIncome]="goldIncome"
+				></lib-gold-income>
 			</div>
 		</mat-card>
 	</div>

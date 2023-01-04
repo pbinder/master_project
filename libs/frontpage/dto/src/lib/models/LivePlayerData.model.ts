@@ -1,3 +1,4 @@
+import { LiveItem } from "./LiveItem.model";
 import {LiveRune} from "./LiveRune.model";
 import {LiveScores} from "./LiveScores.model";
 import {LiveSummonerSpell} from "./LiveSummonerSpell.model";
@@ -6,7 +7,7 @@ export interface LivePlayerData {
 	championName: string;
 	isBot: boolean;
 	isDead: boolean;
-	items: [];
+	items: LiveItem[];
 	level: number;
 	position: string;
 	rawChampionName: string;

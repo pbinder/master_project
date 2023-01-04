@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ChampionList, LiveGameData, Summoner} from "@visual-analytics/frontpage/dto";
+import {ChampionList, Iteminfo, LiveGameData, Summoner} from "@visual-analytics/frontpage/dto";
 
 @Injectable({
 	providedIn: "root",
@@ -26,5 +26,9 @@ export class AccountDataService {
 
 	getLiveMatchData(): Observable<LiveGameData> {
 		return this.httpClient.get<LiveGameData>(this.url + "getLiveMatchData");
+	}
+
+	getItemInfo(): Observable<Iteminfo> {
+		return this.httpClient.get<Iteminfo>(this.url + "getItemInfo");
 	}
 }

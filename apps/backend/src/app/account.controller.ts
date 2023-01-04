@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query } from '@nestjs/common';
 
 import { AccountService } from './account.service';
 
@@ -24,6 +24,21 @@ export class AccountController {
   @Get('getLiveMatchData')
   getLiveMatchData() {
     return this.accountService.getLiveMatchData();
+  }
+
+  @Get('getChampionDetection')
+  getChampionDetection() {
+    return this.accountService.getChampionDetection();
+  }
+
+  @Post('setChampions')
+  setChampions() {
+    return this.accountService.setChampions();
+  }
+
+  @Get('getItemInfo')
+  getItemInfo() {
+    return this.accountService.getItemInfo();
   }
 
 }

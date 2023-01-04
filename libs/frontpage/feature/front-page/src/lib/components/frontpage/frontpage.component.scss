@@ -46,6 +46,13 @@
 	border-radius: 10px;
 	background-color: rgba(0, 65, 50, 0.8);
 
+	.gridList {
+		z-index: 1000;
+		display: flex;
+		width: 90%;
+		height: 400px !important;
+	}
+
 	.scoresCard {
 		.scores {
 			width: 150px;
@@ -55,7 +62,7 @@
 	}
 
 	.guides {
-		width: 80%;
+		width: 50%;
 		margin-bottom: 10px;
 	}
 
@@ -88,6 +95,7 @@
 		width: 80%;
 		border: solid 1px rgba(236, 173, 12, 0.7);
 		border-radius: 10px;
+		margin-bottom: 10px;
 		background-color: rgba(0, 50, 40, 0.9);
 		color: rgba(255, 255, 255, 0.8);
 

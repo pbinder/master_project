@@ -3,7 +3,7 @@ import {environment} from "../environments/environment";
 import {RiotAPI, RiotAPITypes, PlatformId, DDragon} from "@fightmegg/riot-api";
 import {Injectable} from "@nestjs/common";
 import {map, Observable} from "rxjs";
-import {LiveGameData} from "@visual-analytics/frontpage/dto";
+import {ChampionDetection, LiveGameData} from "@visual-analytics/frontpage/dto";
 
 @Injectable()
 export class AccountService {
@@ -29,13 +29,31 @@ export class AccountService {
 
 	getChampionByName(championName: string): Promise<RiotAPITypes.DDragon.DDragonChampionDTO> {
 		const ddragon = new DDragon();
-		const champ = ddragon.champion.byName({locale: RiotAPITypes.DDragon.LOCALE.en_US, version: "", championName});
+		const champ = ddragon.champion.byName({locale: RiotAPITypes.DDragon.LOCALE.en_US, version: environment.PATCH, championName});
 
 		return champ;
+	}
+
+	getChampionDetection(): Observable<ChampionDetection[]> {
+		const getChampionDetection = environment.PYTHON_BACKEND + "getChampionDetection";
+		return this.httpService.get(getChampionDetection).pipe(map(response => response.data));
+	}
+
+	setChampions(): Observable<number> {
+		const setChampions = environment.PYTHON_BACKEND + "setChampions";
+    console.log('hell')
+		return this.httpService.post(setChampions).pipe(map(response => response.data));
 	}
 
 	getLiveMatchData(): Observable<LiveGameData> {
 		const getGameData = environment.LIVE_CLIENT + "allgamedata";
 		return this.httpService.get(getGameData).pipe(map(response => response.data));
+	}
+
+
+  getItemInfo(): Promise<RiotAPITypes.DDragon.DDragonItemWrapperDTO> {
+		const ddragon = new DDragon();
+		const items = ddragon.items({locale: RiotAPITypes.DDragon.LOCALE.en_US, version:  environment.PATCH});
+		return items;
 	}
 }
