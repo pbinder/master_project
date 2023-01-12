@@ -24,7 +24,8 @@
 		}
 	},
 	"angularCompilerOptions": {
-		"strictTemplates": true
+		"strictTemplates": true,
+		"strictNullChecks": false
 	},
 	"exclude": ["node_modules", "tmp"]
 }
