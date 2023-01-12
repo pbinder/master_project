@@ -31,7 +31,16 @@
 				<lib-objectives
 					[gameState]="gameState"
 					[participationPercentage]="participationPercentage"
+					[gameTimeInMinutes]="gameTimeInMinutes"
 					[gameTimeInSeconds]="gameTimeInSeconds"
+					[isHeraldDead]="isHeraldDead"
+					[isBaronDead]="isBaronDead"
+					[isDragonDead]="isDragonDead"
+					[isInhibDead]="isInhibDead"
+					[heraldKillTime]="heraldKillTime"
+					[baronKillTime]="baronKillTime"
+					[dragonKillTime]="dragonKillTime"
+					[inhibKillTime]="inhibKillTime"
 				></lib-objectives>
 				<lib-warding
 					[playerLane]="playerLane"
@@ -44,7 +53,7 @@
 			<div fxFlex fxLayout="column">
 				<lib-gold-income
 					[gameState]="gameState"
-					[gameTimeInSeconds]="gameTimeInSeconds"
+					[gameTimeInMinutes]="gameTimeInMinutes"
 					[creepScore]="scores?.creepScore"
 					[goldIncome]="goldIncome"
 				></lib-gold-income>

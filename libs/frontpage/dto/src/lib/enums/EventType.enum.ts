@@ -1,8 +1,8 @@
 export enum EventType {
 	TurretKilled = "TurretKilled",
 	InhibKilled = "InhibKilled",
-	DragonKilled = "DragonKilled",
-	BaronKilled = "BaronKilled",
-	HeraldKilled = "HeraldKilled",
+	DragonKill = "DragonKill",
+	BaronKill = "BaronKill",
+	HeraldKill = "HeraldKill",
 	FirstBrick = "FirstBrick",
 }

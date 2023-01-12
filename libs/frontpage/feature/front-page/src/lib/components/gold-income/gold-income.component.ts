@@ -8,7 +8,7 @@ import {GameState} from "@visual-analytics/frontpage/dto";
 })
 export class GoldIncomeComponent implements OnInit, OnDestroy {
 	@Input() gameState!: GameState;
-	@Input() gameTimeInSeconds!: number;
+	@Input() gameTimeInMinutes!: number;
 	@Input() creepScore: number | undefined = 0;
 	@Input() goldIncome!: number;
 
@@ -96,12 +96,12 @@ export class GoldIncomeComponent implements OnInit, OnDestroy {
 	}
 
 	getData() {
-		let gpm: number = Math.round((this.goldIncome / this.gameTimeInSeconds) * 100) / 100;
-		if (this.gameTimeInSeconds < 1) gpm = 500;
+		let gpm: number = Math.round((this.goldIncome / this.gameTimeInMinutes) * 100) / 100;
+		if (this.gameTimeInMinutes < 1) gpm = 500;
 
 		return {
-			name: this.gameTimeInSeconds,
-			value: [this.gameTimeInSeconds, gpm],
+			name: this.gameTimeInMinutes,
+			value: [this.gameTimeInMinutes, gpm],
 		};
 	}
 }
