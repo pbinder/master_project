@@ -17,6 +17,13 @@ node_modules
 .settings/
 *.sublime-workspace
 
+/apps/imageGen/.idea
+/apps/imageGen/__pycache__
+/apps/imageGen/Lib
+/apps/imageGen/vision
+
+
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
