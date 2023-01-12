@@ -1,5 +1,7 @@
-export interface LiveGameEvent{
-  EventID: number;
-  EventName: string;
-  EventTime: number;
+export interface LiveGameEvent {
+	EventID: number;
+	EventName: string;
+	EventTime: number;
+	TurretKilled?: string;
+	InhibKilled?: string;
 }

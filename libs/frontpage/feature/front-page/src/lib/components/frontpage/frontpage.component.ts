@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component} from "@angular/core";
 import {AccountDataService, DetectionDataService} from "@visual-analytics/frontpage/data-access";
 import {
 	Summoner,
@@ -19,8 +19,37 @@ import {
 	Iteminfo,
 	LiveItem,
 	ChampionDetection,
+	BOTTOM_COORDINATES,
+	MID_COORDINATES,
+	TOP_COORDINATES,
+	LiveGameEvent,
+	EventType,
+	BARON_COORDINATES,
+	DRAGON_COORDINATES,
+	TURRETT1L1,
+	TURRETT1C3,
+	TURRETT1R1,
+	TURRETT2L1,
+	TURRETT2C3,
+	TURRETT2R1,
+	TURRETT1L3,
+	TURRETT1L2,
+	TURRETT1C2,
+	TURRETT1C1,
+	TURRETT1C5,
+	TURRETT1C4,
+	TURRETT1R2,
+	TURRETT1R3,
+	TURRETT2L2,
+	TURRETT2L3,
+	TURRETT2C1,
+	TURRETT2C2,
+	TURRETT2C4,
+	TURRETT2C5,
+	TURRETT2R2,
+	TURRETT2R3,
 } from "@visual-analytics/frontpage/dto";
-import {interval, startWith, switchMap, take} from "rxjs";
+import {BehaviorSubject, distinctUntilChanged, interval, startWith, switchMap, take} from "rxjs";
 import {CommunityDragonService} from "../../services/community-dragon.service";
 import {DataDragonService} from "../../services/data-dragon.service";
 
@@ -29,7 +58,7 @@ import {DataDragonService} from "../../services/data-dragon.service";
 	templateUrl: "./frontpage.component.html",
 	styleUrls: ["./frontpage.component.scss"],
 })
-export class FrontpageComponent implements OnInit {
+export class FrontpageComponent {
 	summoner!: Summoner;
 	champions: string[] = [];
 	gameData!: LiveGameData;
@@ -52,6 +81,11 @@ export class FrontpageComponent implements OnInit {
 	gameTimeInSeconds!: number;
 	goldIncome = 0;
 	itemInfo!: Iteminfo;
+	playerLaneIsSet = false;
+	championIcons: string[] = [];
+	gameEvents$ = new BehaviorSubject<LiveGameEvent[]>([]);
+	participation = 0;
+	participationPercentage = 0;
 
 	constructor(
 		private readonly accountDataService: AccountDataService,
@@ -60,6 +94,7 @@ export class FrontpageComponent implements OnInit {
 		private readonly dataDragonService: DataDragonService
 	) {
 		this.perks = this.communityDragonService.getRunePerks();
+		this.detectionDataService.setChampions().pipe(take(1)).subscribe();
 		this.accountDataService
 			.getSummoner()
 			.pipe(take(1))
@@ -67,10 +102,6 @@ export class FrontpageComponent implements OnInit {
 				this.summoner = sum;
 				this.getInitialData();
 			});
-	}
-
-	ngOnInit(): void {
-		this.detectionDataService.setChampions().pipe(take(1)).subscribe();
 
 		interval(2000)
 			.pipe(
@@ -89,13 +120,19 @@ export class FrontpageComponent implements OnInit {
 						: GameState.Mid
 					: GameState.Late;
 
-				console.log("game", gameData);
+				console.log("Seconds", this.gameTimeInSeconds, this.currentTime, this.gameData.gameData.gameTime);
+
+				this.gameEvents$.next(gameData.events.Events);
+
+				if (this.gameTimeInSeconds > 105 && !this.playerLaneIsSet) {
+					console.log("set lane", this.playerLaneIsSet);
+					this.setPlayerLane(this.liveActivePlayerData);
+				}
 
 				this.gameData.allPlayers.forEach((player: LivePlayerData) => {
 					if (player.summonerName == this.summoner?.name) {
 						this.scores = player.scores;
 						this.liveActivePlayerData = player;
-						this.setPlayerLane(this.liveActivePlayerData);
 						this.setGoldIncome();
 					}
 				});
@@ -112,7 +149,88 @@ export class FrontpageComponent implements OnInit {
 				);
 				if (playerDetected) {
 					this.playerPosition = [playerDetected.xmax - 17.5, playerDetected.ymax - 17.5];
-					console.log("detection", detectionData, this.playerPosition);
+					console.log("detection", this.playerPosition);
+				}
+			});
+
+		this.gameEvents$
+			.pipe(distinctUntilChanged((previous, current) => previous.length === current.length))
+			.subscribe((events: LiveGameEvent[]) => {
+				if (events.length > 0) {
+					let lastEvent: LiveGameEvent = events[events.length - 1];
+
+					if (lastEvent.EventName === EventType.FirstBrick) {
+						lastEvent = events[events.length - 2];
+					}
+
+					const objectiveEvents: LiveGameEvent[] = events.filter(
+						(event: LiveGameEvent) =>
+							event.EventName === EventType.BaronKilled ||
+							event.EventName === EventType.HeraldKilled ||
+							event.EventName === EventType.TurretKilled ||
+							event.EventName === EventType.DragonKilled ||
+							event.EventName === EventType.InhibKilled
+					);
+
+					if (
+						lastEvent.EventName === EventType.BaronKilled ||
+						lastEvent.EventName === EventType.HeraldKilled ||
+						lastEvent.EventName === EventType.TurretKilled ||
+						lastEvent.EventName === EventType.DragonKilled ||
+						lastEvent.EventName === EventType.InhibKilled
+					) {
+						switch (lastEvent.EventName) {
+							case EventType.BaronKilled:
+								if (this.isInVicinity(this.playerPosition, BARON_COORDINATES)) {
+									this.participation++;
+								}
+								break;
+							case EventType.HeraldKilled:
+								if (this.isInVicinity(this.playerPosition, BARON_COORDINATES)) {
+									this.participation++;
+								}
+								break;
+							case EventType.TurretKilled: {
+								if (
+									(lastEvent.TurretKilled.includes("T2") && this.side === Side.Blue) ||
+									(lastEvent.TurretKilled.includes("T1") && this.side === Side.Red)
+								) {
+									const turretCoordinates = this.getObjectiveCoordinates(
+										lastEvent.TurretKilled,
+										EventType.TurretKilled
+									);
+									if (this.isInVicinity(this.playerPosition, turretCoordinates)) {
+										this.participation++;
+									}
+								}
+								break;
+							}
+							case EventType.DragonKilled: {
+								if (this.isInVicinity(this.playerPosition, DRAGON_COORDINATES)) {
+									this.participation++;
+								}
+								break;
+							}
+							case EventType.InhibKilled: {
+								if (
+									(lastEvent.TurretKilled.includes("T2") && this.side === Side.Blue) ||
+									(lastEvent.TurretKilled.includes("T1") && this.side === Side.Red)
+								) {
+									const inhibCoordinates = this.getObjectiveCoordinates(
+										lastEvent.InhibKilled,
+										EventType.InhibKilled
+									);
+									if (this.isInVicinity(this.playerPosition, inhibCoordinates)) {
+										this.participation++;
+									}
+								}
+								break;
+							}
+						}
+
+						this.participationPercentage = this.participation / objectiveEvents.length;
+						console.log("hell", events);
+					}
 				}
 			});
 	}
@@ -128,20 +246,23 @@ export class FrontpageComponent implements OnInit {
 			.subscribe((gameData: LiveGameData) => {
 				this.gameData = gameData;
 				this.activePlayer = gameData.activePlayer;
-				//this.getMatchedRunes();
 
 				gameData?.allPlayers.forEach((player: LivePlayerData) => {
-					this.champions.push(player.championName);
+					const championName = player.championName.replace(" ", "").replace("'", "").replace(".", "");
+					this.champions.push(championName);
 					if (player?.summonerName === this.summoner?.name) {
-						this.playerChampion = player.championName;
+						this.playerChampion = championName;
 						this.scores = player.scores;
 						this.side = player.team === "ORDER" ? Side.Blue : Side.Red;
 						this.accountDataService
-							.getChampion(player.championName)
+							.getChampion(championName)
 							.pipe(take(1))
 							.subscribe((champion: ChampionList) => {
-								this.championInfo = champion.data[player.championName];
+								this.championInfo = champion.data[championName];
 								this.championInfos.push(this.championInfo);
+								this.championIcons.push(
+									`assets/resources/dragontail/12.20.1/img/champion/${this.championInfo?.name.trim()}.png`
+								);
 								const currentSkin: Skin | undefined = this.championInfo.skins.find(
 									(skin: Skin) => skin.name === player.skinName
 								);
@@ -152,32 +273,139 @@ export class FrontpageComponent implements OnInit {
 							});
 					} else {
 						this.accountDataService
-							.getChampion(player.championName)
+							.getChampion(championName)
 							.pipe(take(1))
 							.subscribe((champion: ChampionList) => {
-								this.championInfo = champion.data[player.championName];
-								this.championInfos.push(this.championInfo);
+								this.championInfos.push(champion.data[championName]);
+								this.championIcons.push(
+									`assets/resources/dragontail/12.20.1/img/champion/${championName}.png`
+								);
 							});
 					}
-					console.log("info", this.championInfos);
 				});
 			});
 	}
 
 	setPlayerLane(activePlayer: LivePlayerData): void {
-		const lane: LanePosition = LanePosition.Mid;
+		this.playerLaneIsSet = true;
+		let lane: LanePosition = LanePosition.Support;
+		if (this.isInVicinity(this.playerPosition, BOTTOM_COORDINATES)) {
+			lane = LanePosition.Bot;
+		} else if (this.isInVicinity(this.playerPosition, MID_COORDINATES)) {
+			lane = LanePosition.Mid;
+		} else if (this.isInVicinity(this.playerPosition, TOP_COORDINATES)) {
+			lane = LanePosition.Top;
+		}
 
 		if (
 			activePlayer.summonerSpells.summonerSpellOne.displayName === "Smite" ||
 			activePlayer.summonerSpells.summonerSpellTwo.displayName === "Smite"
 		) {
-			this.playerLane = LanePosition.Jungle;
+			lane = LanePosition.Jungle;
 		}
 
 		const position = activePlayer.position as LanePosition;
 
 		this.playerLane = activePlayer?.position.length > 0 ? position : lane;
 		console.log("Pos", this.playerLane, position);
+	}
+
+	isInVicinity(playerCoordinates: number[], targetCoordinates: number[]): boolean {
+		if (
+			targetCoordinates[0] - 30 < playerCoordinates[0] &&
+			playerCoordinates[0] < targetCoordinates[0] + 30 &&
+			targetCoordinates[1] - 30 < playerCoordinates[1] &&
+			playerCoordinates[1] < targetCoordinates[1] + 30
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	getObjectiveCoordinates(name: string, type: EventType): number[] {
+		if (type === EventType.TurretKilled) {
+			if (name.includes("T1")) {
+				if (name.includes("L")) {
+					if (name.includes("01")) {
+						return TURRETT1L1;
+					} else if (name.includes("02")) {
+						return TURRETT1L2;
+					} else if (name.includes("03")) {
+						return TURRETT1L3;
+					}
+				} else if (name.includes("C")) {
+					if (name.includes("01")) {
+						return TURRETT1C1;
+					} else if (name.includes("02")) {
+						return TURRETT1C2;
+					} else if (name.includes("03")) {
+						return TURRETT1C3;
+					} else if (name.includes("04")) {
+						return TURRETT1C4;
+					} else if (name.includes("05")) {
+						return TURRETT1C5;
+					}
+				} else if (name.includes("R")) {
+					if (name.includes("01")) {
+						return TURRETT1R1;
+					} else if (name.includes("02")) {
+						return TURRETT1R2;
+					} else if (name.includes("03")) {
+						return TURRETT1R3;
+					}
+				}
+			} else if (name.includes("T2")) {
+				if (name.includes("L")) {
+					if (name.includes("01")) {
+						return TURRETT2L1;
+					} else if (name.includes("02")) {
+						return TURRETT2L2;
+					} else if (name.includes("03")) {
+						return TURRETT2L3;
+					}
+				} else if (name.includes("C")) {
+					if (name.includes("01")) {
+						return TURRETT2C1;
+					} else if (name.includes("02")) {
+						return TURRETT2C2;
+					} else if (name.includes("03")) {
+						return TURRETT2C3;
+					} else if (name.includes("04")) {
+						return TURRETT2C4;
+					} else if (name.includes("05")) {
+						return TURRETT2C5;
+					}
+				} else if (name.includes("R")) {
+					if (name.includes("01")) {
+						return TURRETT2R1;
+					} else if (name.includes("02")) {
+						return TURRETT2R2;
+					} else if (name.includes("03")) {
+						return TURRETT2R3;
+					}
+				}
+			}
+		} else if (type === EventType.InhibKilled) {
+			if (name.includes("T1")) {
+				if (name.includes("L")) {
+					return TURRETT1L1;
+				} else if (name.includes("C")) {
+					return TURRETT1C3;
+				} else if (name.includes("R")) {
+					return TURRETT1R1;
+				}
+			} else if (name.includes("T2")) {
+				if (name.includes("L")) {
+					return TURRETT2L1;
+				} else if (name.includes("C")) {
+					return TURRETT2C3;
+				} else if (name.includes("R")) {
+					return TURRETT2R1;
+				}
+			}
+		}
+		return [];
 	}
 
 	setGoldIncome(): void {

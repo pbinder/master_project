@@ -2,7 +2,7 @@
 	<div class="mainCard">
 		<div class="header" fxLayout="row">
 			<div class="scoresCard" fxLayout="row" fxLayoutAlign="space-between">
-				<p style="text-align: center">WardScore <br />{{ scores?.wardScore }}</p>
+				<p style="text-align: center">WardScore <br />{{ scores?.wardScore | number: "1.0-2" }}</p>
 				<p style="text-align: center">Minionscore <br />{{ scores?.creepScore }}</p>
 				<p>
 					K / D / A <br />
@@ -10,43 +10,44 @@
 				</p>
 				<p>Time <br />{{ currentTime }}</p>
 			</div>
-			<h1 class="title" fxFlex>{{ summoner.name }} playing as {{ championInfo.name }}</h1>
+			<h1 class="title" fxFlex>{{ summoner.name }} playing as {{ championInfo?.name }}</h1>
 			<img mat-card-image class="championTile" [src]="image" />
 		</div>
 
 		<mat-card class="overViewCard" fxLayout="row" fxLayoutAlign="space-between">
 			<div fxFlex fxLayout="column">
 				<div class="guides" *ngIf="champions.length > 0">
-					<lib-champion-guide [champions]="champions" [championInfos]="championInfos" [gameState]="gameState">
+					<lib-champion-guide
+						[champions]="champions"
+						[championInfos]="championInfos"
+						[championIcons]="championIcons"
+						[gameState]="gameState"
+					>
 					</lib-champion-guide>
 				</div>
 			</div>
 
 			<div fxFlex fxLayout="column">
-				<mat-accordion>
-					<mat-expansion-panel class="objectives" hideToggle>
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								<p>Objectives</p>
-							</mat-panel-title>
-						</mat-expansion-panel-header>
-						<lib-objectives [gameState]="gameState"></lib-objectives>
-					</mat-expansion-panel>
-				</mat-accordion>
-
-				<lib-warding
-					[playerLane]="playerLane"
+				<lib-objectives
 					[gameState]="gameState"
-					[laneState]="laneState"
-					[side]="side"
-				></lib-warding>
+					[participationPercentage]="participationPercentage"
+					[gameTimeInSeconds]="gameTimeInSeconds"
+				></lib-objectives>
+			</div>
 
+			<div fxFlex fxLayout="column">
 				<lib-gold-income
 					[gameState]="gameState"
 					[gameTimeInSeconds]="gameTimeInSeconds"
 					[creepScore]="scores?.creepScore"
 					[goldIncome]="goldIncome"
 				></lib-gold-income>
+				<lib-warding
+					[playerLane]="playerLane"
+					[gameState]="gameState"
+					[laneState]="laneState"
+					[side]="side"
+				></lib-warding>
 			</div>
 		</mat-card>
 	</div>

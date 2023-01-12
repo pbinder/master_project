@@ -6,8 +6,9 @@ import {ROUTES} from "./routes/routes";
 import {COMPONENTS} from "./components/components";
 import {FormsModule} from "@angular/forms";
 import {MatExpansionModule} from "@angular/material/expansion";
-import {MatGridListModule} from '@angular/material/grid-list';
+import {MatGridListModule} from "@angular/material/grid-list";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {NgxEchartsModule} from "ngx-echarts";
 
 @NgModule({
 	declarations: COMPONENTS,
@@ -18,7 +19,10 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 		RouterModule.forChild(ROUTES),
 		MatCardModule,
 		MatExpansionModule,
-    MatGridListModule
+		MatGridListModule,
+		NgxEchartsModule.forRoot({
+			echarts: () => import("echarts"),
+		}),
 	],
 })
 export class FrontpageFeatureFrontPageModule {}

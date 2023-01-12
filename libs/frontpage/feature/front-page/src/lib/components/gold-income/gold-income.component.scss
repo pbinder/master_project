@@ -1,9 +1,21 @@
-.header{
-  color: rgba(255, 255, 255, 0.8);
-  text-align: center;
+.header {
+	color: rgba(255, 255, 255, 0.8);
+	text-align: center;
 }
 
-.gold{
-  color: rgba(255, 255, 255, 0.8);
-  text-align: center;
+.gold {
+	color: #ffffffcc;
+	text-align: center;
+}
+
+.chart {
+	width: 450px;
+	height: 350px;
+}
+
+.wrapper {
+	width: 90%;
+	padding: 5px 20px;
+	border: solid 1px rgba(236, 173, 12, 0.7);
+	border-radius: 10px;
 }
