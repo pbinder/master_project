@@ -1,4 +1,5 @@
 import {ChampionGuideComponent} from "./champion-guide/champion-guide.component";
+import {FreezingComponent} from "./freezing/freezing.component";
 import {FrontpageComponent} from "./frontpage/frontpage.component";
 import {GoldIncomeComponent} from "./gold-income/gold-income.component";
 import {ObjectivesComponent} from "./objectives/objectives.component";
@@ -10,4 +11,5 @@ export const COMPONENTS = [
 	WardingComponent,
 	GoldIncomeComponent,
 	ObjectivesComponent,
+	FreezingComponent,
 ];

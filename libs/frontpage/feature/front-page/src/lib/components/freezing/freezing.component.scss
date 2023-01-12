@@ -1,0 +1,39 @@
+.wrapper {
+	width: 95%;
+	padding: 10px;
+}
+
+.legend {
+	position: absolute;
+	padding: 10px;
+	margin-top: -50px;
+}
+
+.howToFreeze {
+	width: 600px !important;
+	border: solid 1px rgba(236, 173, 12, 0.7);
+	border-radius: 10px;
+}
+.position {
+	width: 600px !important;
+	border: solid 1px rgba(236, 173, 12, 0.7);
+	border-radius: 10px;
+}
+
+mat-expansion-panel {
+	margin-bottom: 10px;
+	padding: 10px;
+	border: solid 1px rgba(236, 173, 12, 0.7);
+	background-color: rgba(0, 50, 40, 0.9);
+	color: rgba(255, 255, 255, 0.8);
+	border-radius: 10px;
+
+	mat-expansion-panel-header {
+		padding: 0 !important;
+
+		mat-panel-title {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 17px;
+		}
+	}
+}

@@ -33,6 +33,12 @@
 					[participationPercentage]="participationPercentage"
 					[gameTimeInSeconds]="gameTimeInSeconds"
 				></lib-objectives>
+				<lib-warding
+					[playerLane]="playerLane"
+					[gameState]="gameState"
+					[laneState]="laneState"
+					[side]="side"
+				></lib-warding>
 			</div>
 
 			<div fxFlex fxLayout="column">
@@ -42,12 +48,7 @@
 					[creepScore]="scores?.creepScore"
 					[goldIncome]="goldIncome"
 				></lib-gold-income>
-				<lib-warding
-					[playerLane]="playerLane"
-					[gameState]="gameState"
-					[laneState]="laneState"
-					[side]="side"
-				></lib-warding>
+				<lib-freezing></lib-freezing>
 			</div>
 		</mat-card>
 	</div>
