@@ -1,4 +1,35 @@
 <div class="wrapper">
 	<h3 class="header">Objectives</h3>
-	<div class="chart" echarts [options]="options" [merge]="updateOptions"></div>
+	<div class="chart-wrapper">
+		<div *ngIf="20 - gameTimeInMinutes > 0 && 8 - gameTimeInMinutes < 0" class="timer-wrapper" fxLayout="row">
+			<img class="icon" src="assets/resources/objective-icons/herald.png" />
+			<p *ngIf="isHeraldDead" class="icon-text">
+				Herald Timer: {{ heraldKillTime + 360 - gameTimeInSeconds | number: "1.0-2" }}
+			</p>
+			<p *ngIf="!isHeraldDead" class="icon-text">Herald is Up</p>
+		</div>
+		<div *ngIf="20 - gameTimeInMinutes < 0" class="timer-wrapper" fxLayout="row">
+			<img class="icon" src="assets/resources/objective-icons/baron.png" />
+			<p *ngIf="isBaronDead" class="icon-text">
+				Baron Timer: {{ baronKillTime + 360 - gameTimeInSeconds | number: "1.0-2" }}
+			</p>
+			<p *ngIf="!isBaronDead" class="icon-text">Baron is Up</p>
+		</div>
+		<div *ngIf="5 - gameTimeInMinutes < 0" class="timer-wrapper" fxLayout="row">
+			<img class="icon" src="assets/resources/objective-icons/dragon.png" />
+			<p *ngIf="isDragonDead" class="icon-text">
+				Dragon Timer: {{ dragonKillTime + 300 - gameTimeInSeconds | number: "1.0-2" }}
+			</p>
+			<p *ngIf="!isDragonDead" class="icon-text">Dragon is Up</p>
+		</div>
+		<div *ngIf="14 - gameTimeInMinutes > 0" class="timer-wrapper" fxLayout="row">
+			<img class="icon" src="assets/resources/objective-icons/turret.png" />
+			<p class="icon-text">Plating Timer: {{ 14 - gameTimeInMinutes | number: "1.0-2" }}</p>
+		</div>
+		<div *ngIf="isInhibDead" class="timer-wrapper" fxLayout="row">
+			<img class="icon" src="assets/resources/objective-icons/inhibitor.png" />
+			<p class="icon-text">Inhibitor Timer: {{ inhibKillTime + 360 - gameTimeInSeconds | number: "1.0-2" }}</p>
+		</div>
+		<div class="chart" echarts [options]="options" [merge]="updateOptions"></div>
+	</div>
 </div>

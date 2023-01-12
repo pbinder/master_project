@@ -78,6 +78,7 @@ export class FrontpageComponent {
 	playerLane: LanePosition = LanePosition.Top;
 	laneState: LaneState = LaneState.Start;
 	side: Side = Side.Blue;
+	gameTimeInMinutes!: number;
 	gameTimeInSeconds!: number;
 	goldIncome = 0;
 	itemInfo!: Iteminfo;
@@ -86,6 +87,14 @@ export class FrontpageComponent {
 	gameEvents$ = new BehaviorSubject<LiveGameEvent[]>([]);
 	participation = 0;
 	participationPercentage = 0;
+	isHeraldDead = false;
+	isBaronDead = false;
+	isDragonDead = false;
+	isInhibDead = false;
+	heraldKillTime = 0;
+	baronKillTime = 0;
+	dragonKillTime = 0;
+	inhibKillTime = 0;
 
 	constructor(
 		private readonly accountDataService: AccountDataService,
@@ -112,15 +121,17 @@ export class FrontpageComponent {
 				this.gameData = gameData;
 
 				this.activePlayer = gameData.activePlayer;
-				this.gameTimeInSeconds = Math.round((this.gameData.gameData.gameTime * 100) / 60) / 100;
-				this.setTime(this.gameData.gameData.gameTime);
+				this.gameTimeInSeconds = this.gameData.gameData.gameTime;
+				this.setTime(this.gameTimeInSeconds);
+				this.updateKillFlags(this.gameTimeInSeconds);
+				this.gameTimeInMinutes = Math.round((this.gameTimeInSeconds * 100) / 60) / 100;
 				this.gameState = this.currentTime.startsWith("25")
 					? this.currentTime.startsWith("15")
 						? GameState.Early
 						: GameState.Mid
 					: GameState.Late;
 
-				console.log("Seconds", this.gameTimeInSeconds, this.currentTime, this.gameData.gameData.gameTime);
+				console.log("Seconds", this.gameTimeInMinutes, this.currentTime, this.gameTimeInSeconds);
 
 				this.gameEvents$.next(gameData.events.Events);
 
@@ -165,27 +176,31 @@ export class FrontpageComponent {
 
 					const objectiveEvents: LiveGameEvent[] = events.filter(
 						(event: LiveGameEvent) =>
-							event.EventName === EventType.BaronKilled ||
-							event.EventName === EventType.HeraldKilled ||
+							event.EventName === EventType.BaronKill ||
+							event.EventName === EventType.HeraldKill ||
 							event.EventName === EventType.TurretKilled ||
-							event.EventName === EventType.DragonKilled ||
+							event.EventName === EventType.DragonKill ||
 							event.EventName === EventType.InhibKilled
 					);
 
 					if (
-						lastEvent.EventName === EventType.BaronKilled ||
-						lastEvent.EventName === EventType.HeraldKilled ||
+						lastEvent.EventName === EventType.BaronKill ||
+						lastEvent.EventName === EventType.HeraldKill ||
 						lastEvent.EventName === EventType.TurretKilled ||
-						lastEvent.EventName === EventType.DragonKilled ||
+						lastEvent.EventName === EventType.DragonKill ||
 						lastEvent.EventName === EventType.InhibKilled
 					) {
 						switch (lastEvent.EventName) {
-							case EventType.BaronKilled:
+							case EventType.BaronKill:
+								this.isBaronDead = true;
+								this.baronKillTime = lastEvent.EventTime;
 								if (this.isInVicinity(this.playerPosition, BARON_COORDINATES)) {
 									this.participation++;
 								}
 								break;
-							case EventType.HeraldKilled:
+							case EventType.HeraldKill:
+								this.isHeraldDead = true;
+								this.heraldKillTime = lastEvent.EventTime;
 								if (this.isInVicinity(this.playerPosition, BARON_COORDINATES)) {
 									this.participation++;
 								}
@@ -205,13 +220,17 @@ export class FrontpageComponent {
 								}
 								break;
 							}
-							case EventType.DragonKilled: {
+							case EventType.DragonKill: {
+								this.isDragonDead = true;
+								this.dragonKillTime = lastEvent.EventTime;
 								if (this.isInVicinity(this.playerPosition, DRAGON_COORDINATES)) {
 									this.participation++;
 								}
 								break;
 							}
 							case EventType.InhibKilled: {
+								this.isInhibDead = true;
+								this.inhibKillTime = lastEvent.EventTime;
 								if (
 									(lastEvent.TurretKilled.includes("T2") && this.side === Side.Blue) ||
 									(lastEvent.TurretKilled.includes("T1") && this.side === Side.Red)
@@ -248,7 +267,10 @@ export class FrontpageComponent {
 				this.activePlayer = gameData.activePlayer;
 
 				gameData?.allPlayers.forEach((player: LivePlayerData) => {
-					const championName = player.championName.replace(" ", "").replace("'", "").replace(".", "");
+					let championName = player.championName.replace(" ", "").replace("'", "").replace(".", "");
+					if (championName === "Wukong") {
+						championName = "MonkeyKing";
+					}
 					this.champions.push(championName);
 					if (player?.summonerName === this.summoner?.name) {
 						this.playerChampion = championName;
@@ -425,6 +447,18 @@ export class FrontpageComponent {
 		const finalTime = minutes + ":" + seconds;
 
 		this.currentTime = finalTime;
+	}
+
+	updateKillFlags(time: number): void {
+		if (time > this.heraldKillTime + 360 && this.isHeraldDead) {
+			this.isHeraldDead = false;
+		} else if (time > this.baronKillTime + 360 && this.isBaronDead) {
+			this.isBaronDead = false;
+		} else if (time > this.dragonKillTime + 300 && this.isDragonDead) {
+			this.isDragonDead = false;
+		} else if (time > this.inhibKillTime + 360 && this.isInhibDead) {
+			this.isInhibDead = false;
+		}
 	}
 
 	getMatchedRunes(): void {

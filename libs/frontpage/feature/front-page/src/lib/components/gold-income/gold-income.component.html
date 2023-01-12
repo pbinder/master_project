@@ -1,11 +1,12 @@
 <div class="wrapper">
 	<h3 class="header">Gold Income</h3>
 	<div class="gold">
-		<p *ngIf="creepScore">Creeps per Minute: {{ creepScore / gameTimeInSeconds | number: "1.0-2" }}</p>
-		<p *ngIf="goldIncome && gameTimeInSeconds >= 1">
-			Gold per Minute: {{ goldIncome / gameTimeInSeconds | number: "1.0-2" }}
+		<p *ngIf="creepScore">
+			Creeps per Minute: {{ creepScore / gameTimeInMinutes | number: "1.0-2" }} (Optimal would be 10)
 		</p>
-
+		<p *ngIf="goldIncome && gameTimeInMinutes >= 1">
+			Gold per Minute: {{ goldIncome / gameTimeInMinutes | number: "1.0-2" }}
+		</p>
 		<div class="chart" echarts [options]="options" [merge]="updateOptions"></div>
 	</div>
 </div>

@@ -9,8 +9,17 @@ import {EChartsOption} from "echarts";
 })
 export class ObjectivesComponent implements OnInit, OnDestroy {
 	@Input() gameState!: GameState;
+	@Input() gameTimeInMinutes!: number;
 	@Input() gameTimeInSeconds!: number;
 	@Input() participationPercentage: number;
+	@Input() isHeraldDead: boolean;
+	@Input() isBaronDead: boolean;
+	@Input() isDragonDead: boolean;
+	@Input() isInhibDead: boolean;
+	@Input() heraldKillTime: number;
+	@Input() baronKillTime: number;
+	@Input() dragonKillTime: number;
+	@Input() inhibKillTime: number;
 
 	options: EChartsOption;
 	updateOptions: any;
@@ -102,8 +111,8 @@ export class ObjectivesComponent implements OnInit, OnDestroy {
 
 	getData() {
 		return {
-			name: this.gameTimeInSeconds,
-			value: [this.gameTimeInSeconds, this.participationPercentage * 100],
+			name: this.gameTimeInMinutes,
+			value: [this.gameTimeInMinutes, this.participationPercentage * 100],
 		};
 	}
 }
