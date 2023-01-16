@@ -25,6 +25,7 @@
 					>
 					</lib-champion-guide>
 				</div>
+				<lib-freezing *ngIf="goldIncome / gameTimeInMinutes < 350"></lib-freezing>
 			</div>
 
 			<div fxFlex fxLayout="column">
@@ -42,12 +43,14 @@
 					[dragonKillTime]="dragonKillTime"
 					[inhibKillTime]="inhibKillTime"
 				></lib-objectives>
-				<lib-warding
-					[playerLane]="playerLane"
-					[gameState]="gameState"
-					[laneState]="laneState"
-					[side]="side"
-				></lib-warding>
+				<lib-info-tab
+					[kda]="(scores?.kills + scores?.assists) / scores?.deaths"
+					[minionScore]="scores?.creepScore"
+					[visionScore]="scores?.wardScore"
+					[gpm]="goldIncome / gameTimeInMinutes"
+					[objectivePercentage]="participationPercentage"
+					[gameTimeInMinutes]="gameTimeInMinutes"
+				></lib-info-tab>
 			</div>
 
 			<div fxFlex fxLayout="column">
@@ -57,7 +60,12 @@
 					[creepScore]="scores?.creepScore"
 					[goldIncome]="goldIncome"
 				></lib-gold-income>
-				<lib-freezing></lib-freezing>
+				<lib-warding
+					[playerLane]="playerLane"
+					[gameState]="gameState"
+					[laneState]="laneState"
+					[side]="side"
+				></lib-warding>
 			</div>
 		</mat-card>
 	</div>

@@ -48,6 +48,28 @@ import {
 	TURRETT2C5,
 	TURRETT2R2,
 	TURRETT2R3,
+	TURRETT1C1STRING,
+	TURRETT1C2STRING,
+	TURRETT1C3STRING,
+	TURRETT1C4STRING,
+	TURRETT1C5STRING,
+	TURRETT1L1STRING,
+	TURRETT1L2STRING,
+	TURRETT1L3STRING,
+	TURRETT1R1STRING,
+	TURRETT1R2STRING,
+	TURRETT1R3STRING,
+	TURRETT2C1STRING,
+	TURRETT2C2STRING,
+	TURRETT2C3STRING,
+	TURRETT2C4STRING,
+	TURRETT2C5STRING,
+	TURRETT2L1STRING,
+	TURRETT2L2STRING,
+	TURRETT2L3STRING,
+	TURRETT2R1STRING,
+	TURRETT2R2STRING,
+	TURRETT2R3STRING,
 } from "@visual-analytics/frontpage/dto";
 import {BehaviorSubject, distinctUntilChanged, interval, startWith, switchMap, take} from "rxjs";
 import {CommunityDragonService} from "../../services/community-dragon.service";
@@ -75,8 +97,8 @@ export class FrontpageComponent {
 	gameState: GameState = GameState.Early;
 	image = "";
 	currentTime = "";
-	playerLane: LanePosition = LanePosition.Top;
-	laneState: LaneState = LaneState.Start;
+	playerLane: LanePosition;
+	laneState: LaneState;
 	side: Side = Side.Blue;
 	gameTimeInMinutes!: number;
 	gameTimeInSeconds!: number;
@@ -131,12 +153,10 @@ export class FrontpageComponent {
 						: GameState.Mid
 					: GameState.Late;
 
-				console.log("Seconds", this.gameTimeInMinutes, this.currentTime, this.gameTimeInSeconds);
-
 				this.gameEvents$.next(gameData.events.Events);
 
 				if (this.gameTimeInSeconds > 105 && !this.playerLaneIsSet) {
-					console.log("set lane", this.playerLaneIsSet);
+					this.laneState = LaneState.Start;
 					this.setPlayerLane(this.liveActivePlayerData);
 				}
 
@@ -160,7 +180,7 @@ export class FrontpageComponent {
 				);
 				if (playerDetected) {
 					this.playerPosition = [playerDetected.xmax - 17.5, playerDetected.ymax - 17.5];
-					console.log("detection", this.playerPosition);
+					console.log("PLAYERPOSITION", this.playerPosition);
 				}
 			});
 
@@ -217,7 +237,11 @@ export class FrontpageComponent {
 									if (this.isInVicinity(this.playerPosition, turretCoordinates)) {
 										this.participation++;
 									}
+								} else {
+									objectiveEvents.pop();
 								}
+								this.setLaneState(lastEvent.TurretKilled);
+
 								break;
 							}
 							case EventType.DragonKill: {
@@ -242,13 +266,15 @@ export class FrontpageComponent {
 									if (this.isInVicinity(this.playerPosition, inhibCoordinates)) {
 										this.participation++;
 									}
+								} else {
+									objectiveEvents.pop();
 								}
 								break;
 							}
 						}
 
 						this.participationPercentage = this.participation / objectiveEvents.length;
-						console.log("hell", events);
+						console.log("EVENTS", events, objectiveEvents);
 					}
 				}
 			});
@@ -308,9 +334,62 @@ export class FrontpageComponent {
 			});
 	}
 
+	setLaneState(eventString: string): void {
+		switch (this.playerLane) {
+			case LanePosition.Top: {
+				if (this.side === Side.Blue) {
+					if (eventString === TURRETT2L3STRING) {
+						this.laneState = LaneState.Winning;
+					} else if (eventString === TURRETT1L3STRING) {
+						this.laneState = LaneState.Losing;
+					}
+				} else {
+					if (eventString === TURRETT2L3STRING) {
+						this.laneState = LaneState.Losing;
+					} else if (eventString === TURRETT1L3STRING) {
+						this.laneState = LaneState.Winning;
+					}
+				}
+				break;
+			}
+			case LanePosition.Mid: {
+				if (this.side === Side.Blue) {
+					if (eventString === TURRETT2C5STRING) {
+						this.laneState = LaneState.Winning;
+					} else if (eventString === TURRETT1C5STRING) {
+						this.laneState = LaneState.Losing;
+					}
+				} else {
+					if (eventString === TURRETT2C5STRING) {
+						this.laneState = LaneState.Losing;
+					} else if (eventString === TURRETT1C5STRING) {
+						this.laneState = LaneState.Winning;
+					}
+				}
+				break;
+			}
+			case LanePosition.Bot: {
+				if (this.side === Side.Blue) {
+					if (eventString === TURRETT2R3STRING) {
+						this.laneState = LaneState.Winning;
+					} else if (eventString === TURRETT1R3STRING) {
+						this.laneState = LaneState.Losing;
+					}
+				} else {
+					if (eventString === TURRETT2R3STRING) {
+						this.laneState = LaneState.Winning;
+					} else if (eventString === TURRETT1R3STRING) {
+						this.laneState = LaneState.Losing;
+					}
+				}
+				break;
+			}
+		}
+	}
+
 	setPlayerLane(activePlayer: LivePlayerData): void {
 		this.playerLaneIsSet = true;
-		let lane: LanePosition = LanePosition.Support;
+		let lane: LanePosition = LanePosition.Mid;
 		if (this.isInVicinity(this.playerPosition, BOTTOM_COORDINATES)) {
 			lane = LanePosition.Bot;
 		} else if (this.isInVicinity(this.playerPosition, MID_COORDINATES)) {
@@ -320,20 +399,21 @@ export class FrontpageComponent {
 		}
 
 		if (
-			activePlayer.summonerSpells.summonerSpellOne.displayName === "Smite" ||
-			activePlayer.summonerSpells.summonerSpellTwo.displayName === "Smite"
+			activePlayer?.summonerSpells.summonerSpellOne.displayName === "Smite" ||
+			activePlayer?.summonerSpells.summonerSpellTwo.displayName === "Smite"
 		) {
 			lane = LanePosition.Jungle;
 		}
 
-		const position = activePlayer.position as LanePosition;
+		const position = activePlayer?.position as LanePosition;
 
 		this.playerLane = activePlayer?.position.length > 0 ? position : lane;
-		console.log("Pos", this.playerLane, position);
+		console.log("SET LANE", this.playerLane, position);
 	}
 
 	isInVicinity(playerCoordinates: number[], targetCoordinates: number[]): boolean {
 		if (
+			playerCoordinates &&
 			targetCoordinates[0] - 30 < playerCoordinates[0] &&
 			playerCoordinates[0] < targetCoordinates[0] + 30 &&
 			targetCoordinates[1] - 30 < playerCoordinates[1] &&
@@ -347,66 +427,51 @@ export class FrontpageComponent {
 
 	getObjectiveCoordinates(name: string, type: EventType): number[] {
 		if (type === EventType.TurretKilled) {
-			if (name.includes("T1")) {
-				if (name.includes("L")) {
-					if (name.includes("01")) {
-						return TURRETT1L1;
-					} else if (name.includes("02")) {
-						return TURRETT1L2;
-					} else if (name.includes("03")) {
-						return TURRETT1L3;
-					}
-				} else if (name.includes("C")) {
-					if (name.includes("01")) {
-						return TURRETT1C1;
-					} else if (name.includes("02")) {
-						return TURRETT1C2;
-					} else if (name.includes("03")) {
-						return TURRETT1C3;
-					} else if (name.includes("04")) {
-						return TURRETT1C4;
-					} else if (name.includes("05")) {
-						return TURRETT1C5;
-					}
-				} else if (name.includes("R")) {
-					if (name.includes("01")) {
-						return TURRETT1R1;
-					} else if (name.includes("02")) {
-						return TURRETT1R2;
-					} else if (name.includes("03")) {
-						return TURRETT1R3;
-					}
-				}
-			} else if (name.includes("T2")) {
-				if (name.includes("L")) {
-					if (name.includes("01")) {
-						return TURRETT2L1;
-					} else if (name.includes("02")) {
-						return TURRETT2L2;
-					} else if (name.includes("03")) {
-						return TURRETT2L3;
-					}
-				} else if (name.includes("C")) {
-					if (name.includes("01")) {
-						return TURRETT2C1;
-					} else if (name.includes("02")) {
-						return TURRETT2C2;
-					} else if (name.includes("03")) {
-						return TURRETT2C3;
-					} else if (name.includes("04")) {
-						return TURRETT2C4;
-					} else if (name.includes("05")) {
-						return TURRETT2C5;
-					}
-				} else if (name.includes("R")) {
-					if (name.includes("01")) {
-						return TURRETT2R1;
-					} else if (name.includes("02")) {
-						return TURRETT2R2;
-					} else if (name.includes("03")) {
-						return TURRETT2R3;
-					}
-				}
+			switch (name) {
+				case TURRETT1C1STRING:
+					return TURRETT1C1;
+				case TURRETT1C2STRING:
+					return TURRETT1C2;
+				case TURRETT1C3STRING:
+					return TURRETT1C3;
+				case TURRETT1C4STRING:
+					return TURRETT1C4;
+				case TURRETT1C5STRING:
+					return TURRETT1C5;
+				case TURRETT1L1STRING:
+					return TURRETT1L1;
+				case TURRETT1L2STRING:
+					return TURRETT1L2;
+				case TURRETT1L3STRING:
+					return TURRETT1L3;
+				case TURRETT1R1STRING:
+					return TURRETT1R1;
+				case TURRETT1R2STRING:
+					return TURRETT1R2;
+				case TURRETT1R3STRING:
+					return TURRETT1R3;
+				case TURRETT2C1STRING:
+					return TURRETT2C1;
+				case TURRETT2C2STRING:
+					return TURRETT2C2;
+				case TURRETT2C3STRING:
+					return TURRETT2C3;
+				case TURRETT2C4STRING:
+					return TURRETT2C4;
+				case TURRETT2C5STRING:
+					return TURRETT2C5;
+				case TURRETT2L1STRING:
+					return TURRETT2L1;
+				case TURRETT2L2STRING:
+					return TURRETT2L2;
+				case TURRETT2L3STRING:
+					return TURRETT2L3;
+				case TURRETT2R1STRING:
+					return TURRETT2R1;
+				case TURRETT2R2STRING:
+					return TURRETT2R2;
+				case TURRETT2R3STRING:
+					return TURRETT2R3;
 			}
 		} else if (type === EventType.InhibKilled) {
 			if (name.includes("T1")) {
