@@ -46,6 +46,6 @@ testem.log
 Thumbs.db
 
 # DataDragon
-apps/visual-analytics/src/assets/resources/*
+#apps/visual-analytics/src/assets/resources/*
 
 .angular
