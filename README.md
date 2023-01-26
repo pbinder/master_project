@@ -1,6 +1,7 @@
 This is a master project for Real time Training and Visualization for League of Legends.
 The programm consists of 4-5 distinct programs.
 All of the can be found under apps
+Note that the image detection part is set to work with 1920x 1080 resolution and a 300x300 minimap and other metrics might lead to complications. you can change that thought under the main.py in imageGen just change the variables and adjust them accordingly.
 
 Setup
 To start the main application you need to start 3 application the node backend the angular frontend and the python detection.

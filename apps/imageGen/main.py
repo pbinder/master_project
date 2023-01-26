@@ -14,6 +14,10 @@ python -m uvicorn main:app --reload
 
 app = FastAPI()
 
+screenWidth = 1920
+screenHeight = 1080
+minimapSize = 300
+
 conf = 0.2 # confidence
 iou = 0.4  # NMS IoU threshold
 agnostic = False  # NMS class-agnostic
@@ -60,7 +64,7 @@ async def get_detected_champions():
 
 
 def getJsonData():
-    image_pil = ImageGrab.grab((1620, 780, 1920, 1080)).convert('RGB')
+    image_pil = ImageGrab.grab((screenWidth - minimapSize, screenHeight - minimapSize, screenWidth, screenHeight)).convert('RGB')
     opencv_image = np.array(image_pil)
     output = lol_model(opencv_image)
     output.print()
