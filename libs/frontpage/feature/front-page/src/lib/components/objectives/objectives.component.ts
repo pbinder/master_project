@@ -82,6 +82,10 @@ export class ObjectivesComponent implements OnInit, OnDestroy {
 					name: "Mocking Data",
 					type: "line",
 					showSymbol: false,
+					lineStyle: {
+						color: "#ebdc0fd9",
+						width: 4,
+					},
 					data: this.data,
 				},
 			],

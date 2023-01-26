@@ -10,15 +10,18 @@
 		<div *ngIf="minionScore / gameTimeInMinutes < 6" class="info-wrapper" fxLayout="row">
 			<img class="icon" src="assets/resources/info-icons/minions.jpg" />
 			<p class="icon-text">
-				Your Minionscore is quite low try to farm more or practice last hitting. An optimal Minionscore would be
-				10 per minute. Also try out freezing your lane to farm more safely.
+				Your Minionscore is quite low try to farm more or practice last hitting. <br />
+				An optimal Minionscore would be 10 per minute. <br />
+				Also try out freezing your lane to farm more safely.
 			</p>
 		</div>
 		<div *ngIf="visionScore / gameTimeInMinutes < 1.5" class="info-wrapper" fxLayout="row">
 			<img class="icon" src="assets/resources/info-icons/ward.png" />
 			<p class="icon-text">
 				Your Visionscore is quite low try to put more wards on good spots have a look at the warding tab for
-				good spots. To increase your score also try to denie enemy vision with pink wards or sweepers.
+				good spots.
+				<br />
+				To increase your score also try to deny enemy vision with pink wards or sweepers.
 			</p>
 		</div>
 		<div *ngIf="gpm < 350" class="info-wrapper" fxLayout="row">
@@ -28,8 +31,9 @@
 		<div *ngIf="objectivePercentage < 0.5" class="info-wrapper" fxLayout="row">
 			<img class="icon" src="assets/resources/objective-icons/turret.png" />
 			<p class="icon-text">
-				Your Objective participation is below 50% try to participate more in your team actions. Have a look at
-				the objective tab to see which objectives are up or on cooldown.
+				Your Objective participation is below 50% try to participate more in your team actions.
+				<br />
+				Have a look at the objective tab to see which objectives are up or on cooldown.
 			</p>
 		</div>
 	</div>

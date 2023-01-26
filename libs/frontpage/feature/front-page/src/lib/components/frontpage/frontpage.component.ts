@@ -6,7 +6,6 @@ import {
 	LiveGameData,
 	LivePlayerData,
 	BasicChampion,
-	Skin,
 	ActivePlayerData,
 	CommunityDragonRune,
 	LiveRune,
@@ -311,6 +310,7 @@ export class FrontpageComponent {
 								this.championIcons.push(
 									`assets/resources/dragontail/12.20.1/img/champion/${this.championInfo?.name.trim()}.png`
 								);
+								/*
 								const currentSkin: Skin | undefined = this.championInfo.skins.find(
 									(skin: Skin) => skin.name === player.skinName
 								);
@@ -318,6 +318,7 @@ export class FrontpageComponent {
 									this.championInfo.id,
 									currentSkin?.num ? currentSkin.num : 0
 								);
+                */
 							});
 					} else {
 						this.accountDataService

@@ -68,6 +68,10 @@ export class GoldIncomeComponent implements OnInit, OnDestroy {
 					name: "AVG Gold Income",
 					type: "line",
 					showSymbol: false,
+					lineStyle: {
+						color: "#ebdc0fd9",
+						width: 4,
+					},
 					emphasis: {
 						line: false,
 					},

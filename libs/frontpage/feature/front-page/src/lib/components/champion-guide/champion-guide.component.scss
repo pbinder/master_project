@@ -2,7 +2,8 @@ mat-expansion-panel {
 	margin-bottom: 10px;
 	padding: 10px;
 	border: solid 1px rgba(236, 173, 12, 0.7);
-	background-color: rgba(0, 50, 40, 0.9);
+	//background-color: rgba(0, 50, 40, 0.9);
+	background-color: rgba(0, 0, 25, 0.9);
 	color: rgba(255, 255, 255, 0.8);
 
 	mat-expansion-panel-header {
@@ -15,10 +16,19 @@ mat-expansion-panel {
 	}
 }
 
+.header {
+	margin: 0 !important;
+	font-size: 18px;
+}
+
 .championIcon {
 	width: 50px;
 	height: 50px;
 	margin-right: 10px;
 	border: solid 1px rgba(236, 173, 12, 0.7);
 	border-radius: 10px;
+}
+
+.tipsForAgainst {
+	font-size: 16px;
 }
