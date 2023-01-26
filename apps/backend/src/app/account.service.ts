@@ -29,7 +29,11 @@ export class AccountService {
 
 	getChampionByName(championName: string): Promise<RiotAPITypes.DDragon.DDragonChampionDTO> {
 		const ddragon = new DDragon();
-		const champ = ddragon.champion.byName({locale: RiotAPITypes.DDragon.LOCALE.en_US, version: environment.PATCH, championName});
+		const champ = ddragon.champion.byName({
+			locale: RiotAPITypes.DDragon.LOCALE.en_US,
+			version: environment.PATCH,
+			championName,
+		});
 
 		return champ;
 	}
@@ -41,7 +45,6 @@ export class AccountService {
 
 	setChampions(): Observable<number> {
 		const setChampions = environment.PYTHON_BACKEND + "setChampions";
-    console.log('hell')
 		return this.httpService.post(setChampions).pipe(map(response => response.data));
 	}
 
@@ -50,10 +53,9 @@ export class AccountService {
 		return this.httpService.get(getGameData).pipe(map(response => response.data));
 	}
 
-
-  getItemInfo(): Promise<RiotAPITypes.DDragon.DDragonItemWrapperDTO> {
+	getItemInfo(): Promise<RiotAPITypes.DDragon.DDragonItemWrapperDTO> {
 		const ddragon = new DDragon();
-		const items = ddragon.items({locale: RiotAPITypes.DDragon.LOCALE.en_US, version:  environment.PATCH});
+		const items = ddragon.items({locale: RiotAPITypes.DDragon.LOCALE.en_US, version: environment.PATCH});
 		return items;
 	}
 }

@@ -15,8 +15,9 @@ export class WardingComponent implements OnChanges {
 	wardingImage = `assets/resources/warding/Early-Laning.jpg`;
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes["playerLane"].currentValue || changes["laneState"].currentValue) {
+		if (changes["playerLane"]?.currentValue || changes["laneState"]?.currentValue) {
 			this.wardingImage = `assets/resources/warding/${this.playerLane}-${this.laneState}-${this.side}.jpg`;
+			console.log("lanestate", this.laneState, this.wardingImage);
 		}
 	}
 }

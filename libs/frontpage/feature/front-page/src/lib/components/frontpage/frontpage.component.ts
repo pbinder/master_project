@@ -335,6 +335,7 @@ export class FrontpageComponent {
 	}
 
 	setLaneState(eventString: string): void {
+		console.log("LANE", this.playerLane, eventString);
 		switch (this.playerLane) {
 			case LanePosition.Top: {
 				if (this.side === Side.Blue) {
