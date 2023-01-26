@@ -9,7 +9,7 @@ from fastapi import FastAPI, Response
 
 '''
 To start use
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 '''
 
 app = FastAPI()
@@ -73,7 +73,7 @@ def setChampions():
     names = open("championNames.json")
     champions = requests.get('https://127.0.0.1:2999/liveclientdata/playerlist', verify=False).json()
 
-    ''' 
+    '''
     For Test purposes
     champions = [{'championName': 'Corki'}, {'championName': 'Draven'}, {'championName': 'Diana'}, {'championName': 'Ezreal'}, {'championName': 'Ekko'},
                  {'championName': 'Darius'}, {'championName': 'Elise'}]
