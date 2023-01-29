@@ -11,8 +11,9 @@ export class AccountDataService {
 
 	constructor(private httpClient: HttpClient) {}
 
-	getSummoner(): Observable<Summoner> {
-		return this.httpClient.get<Summoner>(this.url + "getSummonerByName");
+	getSummoner(summonerName: string): Observable<Summoner> {
+		const params: HttpParams = new HttpParams().set("summonerName", summonerName);
+		return this.httpClient.get<Summoner>(this.url + "getSummonerByName", {params});
 	}
 
 	getAllChampions(): Observable<ChampionList> {

@@ -71,6 +71,7 @@ import {
 	TURRETT2R3STRING,
 } from "@visual-analytics/frontpage/dto";
 import {BehaviorSubject, distinctUntilChanged, interval, startWith, switchMap, take} from "rxjs";
+import {SUMMONER_NAME} from "../../constants/constants";
 import {CommunityDragonService} from "../../services/community-dragon.service";
 import {DataDragonService} from "../../services/data-dragon.service";
 
@@ -95,6 +96,7 @@ export class FrontpageComponent {
 	scores: LiveScores | undefined;
 	gameState: GameState = GameState.Early;
 	image = "";
+	summonerName = SUMMONER_NAME;
 	currentTime = "";
 	playerLane: LanePosition;
 	laneState: LaneState;
@@ -126,7 +128,7 @@ export class FrontpageComponent {
 		this.perks = this.communityDragonService.getRunePerks();
 		this.detectionDataService.setChampions().pipe(take(1)).subscribe();
 		this.accountDataService
-			.getSummoner()
+			.getSummoner(this.summonerName)
 			.pipe(take(1))
 			.subscribe((sum: Summoner) => {
 				this.summoner = sum;
@@ -390,7 +392,6 @@ export class FrontpageComponent {
 	}
 
 	setPlayerLane(activePlayer: LivePlayerData): void {
-		this.playerLaneIsSet = true;
 		let lane: LanePosition = LanePosition.Mid;
 		if (this.isInVicinity(this.playerPosition, BOTTOM_COORDINATES)) {
 			lane = LanePosition.Bot;
@@ -409,7 +410,10 @@ export class FrontpageComponent {
 
 		const position = activePlayer?.position as LanePosition;
 
-		this.playerLane = activePlayer?.position.length > 0 ? position : lane;
+		this.playerLane = activePlayer?.position.length > 0 ? position : null;
+		if (this.playerLane) {
+			this.playerLaneIsSet = true;
+		}
 		console.log("SET LANE", this.playerLane, position);
 	}
 

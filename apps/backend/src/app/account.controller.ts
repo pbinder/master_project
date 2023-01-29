@@ -1,44 +1,43 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import {Controller, Get, Post, Query} from "@nestjs/common";
 
-import { AccountService } from './account.service';
+import {AccountService} from "./account.service";
 
 @Controller()
 export class AccountController {
-  constructor(private readonly accountService: AccountService) {}
+	constructor(private readonly accountService: AccountService) {}
 
-  @Get('getSummonerByName')
-  getSummonerByName() {
-    return this.accountService.getSummonerByName();
-  }
+	@Get("getSummonerByName")
+	getSummonerByName(@Query("summonerName") summonerName: string) {
+		return this.accountService.getSummonerByName(summonerName);
+	}
 
-  @Get('getAllChampions')
-  getAllChampions() {
-    return this.accountService.getAllChampions();
-  }
+	@Get("getAllChampions")
+	getAllChampions() {
+		return this.accountService.getAllChampions();
+	}
 
-  @Get('getChampionByName')
-  getChampionByName(@Query('championName')championName : string) {
-    return this.accountService.getChampionByName(championName);
-  }
+	@Get("getChampionByName")
+	getChampionByName(@Query("championName") championName: string) {
+		return this.accountService.getChampionByName(championName);
+	}
 
-  @Get('getLiveMatchData')
-  getLiveMatchData() {
-    return this.accountService.getLiveMatchData();
-  }
+	@Get("getLiveMatchData")
+	getLiveMatchData() {
+		return this.accountService.getLiveMatchData();
+	}
 
-  @Get('getChampionDetection')
-  getChampionDetection() {
-    return this.accountService.getChampionDetection();
-  }
+	@Get("getChampionDetection")
+	getChampionDetection() {
+		return this.accountService.getChampionDetection();
+	}
 
-  @Post('setChampions')
-  setChampions() {
-    return this.accountService.setChampions();
-  }
+	@Post("setChampions")
+	setChampions() {
+		return this.accountService.setChampions();
+	}
 
-  @Get('getItemInfo')
-  getItemInfo() {
-    return this.accountService.getItemInfo();
-  }
-
+	@Get("getItemInfo")
+	getItemInfo() {
+		return this.accountService.getItemInfo();
+	}
 }

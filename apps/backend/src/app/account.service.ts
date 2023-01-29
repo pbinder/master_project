@@ -9,12 +9,12 @@ import {ChampionDetection, LiveGameData} from "@visual-analytics/frontpage/dto";
 export class AccountService {
 	constructor(private httpService: HttpService) {}
 
-	getSummonerByName(): Promise<RiotAPITypes.Summoner.SummonerDTO> {
+	getSummonerByName(summonerName: string): Promise<RiotAPITypes.Summoner.SummonerDTO> {
 		const rAPI = new RiotAPI(environment.RIOT_LOL_API_KEY);
 
 		const summoner = rAPI.summoner.getBySummonerName({
 			region: PlatformId.EUW1,
-			summonerName: "Tiradur",
+			summonerName: summonerName,
 		});
 
 		return summoner;
