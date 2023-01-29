@@ -4,4 +4,6 @@ export interface LiveGameEvent {
 	EventTime: number;
 	TurretKilled?: string;
 	InhibKilled?: string;
+	KillerName: string;
+	Assisters: string[];
 }

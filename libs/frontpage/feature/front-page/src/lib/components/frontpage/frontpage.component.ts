@@ -107,6 +107,7 @@ export class FrontpageComponent {
 	itemInfo!: Iteminfo;
 	playerLaneIsSet = false;
 	championIcons: string[] = [];
+	blueTeam: string[] = [];
 	gameEvents$ = new BehaviorSubject<LiveGameEvent[]>([]);
 	participation = 0;
 	participationPercentage = 0;
@@ -213,17 +214,39 @@ export class FrontpageComponent {
 					) {
 						switch (lastEvent.EventName) {
 							case EventType.BaronKill:
-								this.isBaronDead = true;
-								this.baronKillTime = lastEvent.EventTime;
-								if (this.isInVicinity(this.playerPosition, BARON_COORDINATES)) {
-									this.participation++;
+								if (
+									(this.side === Side.Blue && this.blueTeam.includes(lastEvent.KillerName)) ||
+									(this.side === Side.Red && !this.blueTeam.includes(lastEvent.KillerName))
+								) {
+									this.isBaronDead = true;
+									this.baronKillTime = lastEvent.EventTime;
+									if (
+										this.isInVicinity(this.playerPosition, BARON_COORDINATES) ||
+										lastEvent.KillerName === this.summonerName ||
+										lastEvent.Assisters.includes(this.summonerName)
+									) {
+										this.participation++;
+									}
+								} else {
+									objectiveEvents.pop();
 								}
 								break;
 							case EventType.HeraldKill:
-								this.isHeraldDead = true;
-								this.heraldKillTime = lastEvent.EventTime;
-								if (this.isInVicinity(this.playerPosition, BARON_COORDINATES)) {
-									this.participation++;
+								if (
+									(this.side === Side.Blue && this.blueTeam.includes(lastEvent.KillerName)) ||
+									(this.side === Side.Red && !this.blueTeam.includes(lastEvent.KillerName))
+								) {
+									this.isHeraldDead = true;
+									this.heraldKillTime = lastEvent.EventTime;
+									if (
+										this.isInVicinity(this.playerPosition, BARON_COORDINATES) ||
+										lastEvent.KillerName === this.summonerName ||
+										lastEvent.Assisters.includes(this.summonerName)
+									) {
+										this.participation++;
+									}
+								} else {
+									objectiveEvents.pop();
 								}
 								break;
 							case EventType.TurretKilled: {
@@ -235,7 +258,11 @@ export class FrontpageComponent {
 										lastEvent.TurretKilled,
 										EventType.TurretKilled
 									);
-									if (this.isInVicinity(this.playerPosition, turretCoordinates)) {
+									if (
+										this.isInVicinity(this.playerPosition, turretCoordinates) ||
+										lastEvent.KillerName === this.summonerName ||
+										lastEvent.Assisters.includes(this.summonerName)
+									) {
 										this.participation++;
 									}
 								} else {
@@ -246,10 +273,21 @@ export class FrontpageComponent {
 								break;
 							}
 							case EventType.DragonKill: {
-								this.isDragonDead = true;
-								this.dragonKillTime = lastEvent.EventTime;
-								if (this.isInVicinity(this.playerPosition, DRAGON_COORDINATES)) {
-									this.participation++;
+								if (
+									(this.side === Side.Blue && this.blueTeam.includes(lastEvent.KillerName)) ||
+									(this.side === Side.Red && !this.blueTeam.includes(lastEvent.KillerName))
+								) {
+									this.isDragonDead = true;
+									this.dragonKillTime = lastEvent.EventTime;
+									if (
+										this.isInVicinity(this.playerPosition, DRAGON_COORDINATES) ||
+										lastEvent.KillerName === this.summonerName ||
+										lastEvent.Assisters.includes(this.summonerName)
+									) {
+										this.participation++;
+									}
+								} else {
+									objectiveEvents.pop();
 								}
 								break;
 							}
@@ -264,7 +302,11 @@ export class FrontpageComponent {
 										lastEvent.InhibKilled,
 										EventType.InhibKilled
 									);
-									if (this.isInVicinity(this.playerPosition, inhibCoordinates)) {
+									if (
+										this.isInVicinity(this.playerPosition, inhibCoordinates) ||
+										lastEvent.KillerName === this.summonerName ||
+										lastEvent.Assisters.includes(this.summonerName)
+									) {
 										this.participation++;
 									}
 								} else {
@@ -294,6 +336,10 @@ export class FrontpageComponent {
 				this.activePlayer = gameData.activePlayer;
 
 				gameData?.allPlayers.forEach((player: LivePlayerData) => {
+					if (player.team === "ORDER") {
+						this.blueTeam.push(player.summonerName);
+					}
+
 					let championName = player.championName.replace(" ", "").replace("'", "").replace(".", "");
 					if (championName === "Wukong") {
 						championName = "MonkeyKing";
