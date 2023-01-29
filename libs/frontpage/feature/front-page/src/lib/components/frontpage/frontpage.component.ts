@@ -392,7 +392,7 @@ export class FrontpageComponent {
 	}
 
 	setPlayerLane(activePlayer: LivePlayerData): void {
-		let lane: LanePosition = LanePosition.Mid;
+		let lane: LanePosition = null;
 		if (this.isInVicinity(this.playerPosition, BOTTOM_COORDINATES)) {
 			lane = LanePosition.Bot;
 		} else if (this.isInVicinity(this.playerPosition, MID_COORDINATES)) {
@@ -410,7 +410,7 @@ export class FrontpageComponent {
 
 		const position = activePlayer?.position as LanePosition;
 
-		this.playerLane = activePlayer?.position.length > 0 ? position : null;
+		this.playerLane = activePlayer?.position.length > 0 ? position : lane;
 		if (this.playerLane) {
 			this.playerLaneIsSet = true;
 		}
