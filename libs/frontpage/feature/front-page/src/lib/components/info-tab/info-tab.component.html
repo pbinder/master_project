@@ -7,7 +7,7 @@
 				Your KDA is quite low try to participate more in fights and play more safe to not die too much.
 			</p>
 		</div>
-		<div *ngIf="minionScore / gameTimeInMinutes < 6" class="info-wrapper" fxLayout="row">
+		<div *ngIf="minionScore / gameTimeInMinutes < 6 && gameTimeInMinutes > 5" class="info-wrapper" fxLayout="row">
 			<img class="icon" src="assets/resources/info-icons/minions.jpg" />
 			<p class="icon-text">
 				Your Minionscore is quite low try to farm more or practice last hitting. <br />
@@ -15,7 +15,7 @@
 				Also try out freezing your lane to farm more safely.
 			</p>
 		</div>
-		<div *ngIf="visionScore / gameTimeInMinutes < 1.5" class="info-wrapper" fxLayout="row">
+		<div *ngIf="visionScore / gameTimeInMinutes < 1 && gameTimeInMinutes > 5" class="info-wrapper" fxLayout="row">
 			<img class="icon" src="assets/resources/info-icons/ward.png" />
 			<p class="icon-text">
 				Your Visionscore is quite low try to put more wards on good spots have a look at the warding tab for
@@ -28,7 +28,7 @@
 			<img class="icon" src="assets/resources/info-icons/gold.png" />
 			<p class="icon-text">Your Gold per Minute is getting lower try to get at least 375.</p>
 		</div>
-		<div *ngIf="objectivePercentage < 0.5" class="info-wrapper" fxLayout="row">
+		<div *ngIf="objectivePercentage < 0.3 && gameTimeInMinutes > 7" class="info-wrapper" fxLayout="row">
 			<img class="icon" src="assets/resources/objective-icons/turret.png" />
 			<p class="icon-text">
 				Your Objective participation is below 50% try to participate more in your team actions.
