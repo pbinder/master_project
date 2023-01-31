@@ -215,8 +215,8 @@ export class FrontpageComponent {
 						switch (lastEvent.EventName) {
 							case EventType.BaronKill:
 								if (
-									(this.side === Side.Blue && this.blueTeam.includes(lastEvent.KillerName)) ||
-									(this.side === Side.Red && !this.blueTeam.includes(lastEvent.KillerName))
+									(this.side === Side.Blue && this.blueTeam.includes(this.summonerName)) ||
+									(this.side === Side.Red && !this.blueTeam.includes(this.summonerName))
 								) {
 									this.isBaronDead = true;
 									this.baronKillTime = lastEvent.EventTime;
@@ -233,8 +233,8 @@ export class FrontpageComponent {
 								break;
 							case EventType.HeraldKill:
 								if (
-									(this.side === Side.Blue && this.blueTeam.includes(lastEvent.KillerName)) ||
-									(this.side === Side.Red && !this.blueTeam.includes(lastEvent.KillerName))
+									(this.side === Side.Blue && this.blueTeam.includes(this.summonerName)) ||
+									(this.side === Side.Red && !this.blueTeam.includes(this.summonerName))
 								) {
 									this.isHeraldDead = true;
 									this.heraldKillTime = lastEvent.EventTime;
@@ -274,8 +274,8 @@ export class FrontpageComponent {
 							}
 							case EventType.DragonKill: {
 								if (
-									(this.side === Side.Blue && this.blueTeam.includes(lastEvent.KillerName)) ||
-									(this.side === Side.Red && !this.blueTeam.includes(lastEvent.KillerName))
+									(this.side === Side.Blue && this.blueTeam.includes(this.summonerName)) ||
+									(this.side === Side.Red && !this.blueTeam.includes(this.summonerName))
 								) {
 									this.isDragonDead = true;
 									this.dragonKillTime = lastEvent.EventTime;
@@ -295,8 +295,8 @@ export class FrontpageComponent {
 								this.isInhibDead = true;
 								this.inhibKillTime = lastEvent.EventTime;
 								if (
-									(lastEvent.TurretKilled.includes("T2") && this.side === Side.Blue) ||
-									(lastEvent.TurretKilled.includes("T1") && this.side === Side.Red)
+									(lastEvent.InhibKilled.includes("T2") && this.side === Side.Blue) ||
+									(lastEvent.InhibKilled.includes("T1") && this.side === Side.Red)
 								) {
 									const inhibCoordinates = this.getObjectiveCoordinates(
 										lastEvent.InhibKilled,
@@ -438,7 +438,7 @@ export class FrontpageComponent {
 	}
 
 	setPlayerLane(activePlayer: LivePlayerData): void {
-		let lane: LanePosition = null;
+		let lane: LanePosition = LanePosition.None;
 		if (this.isInVicinity(this.playerPosition, BOTTOM_COORDINATES)) {
 			lane = LanePosition.Bot;
 		} else if (this.isInVicinity(this.playerPosition, MID_COORDINATES)) {
@@ -454,10 +454,13 @@ export class FrontpageComponent {
 			lane = LanePosition.Jungle;
 		}
 
-		const position = activePlayer?.position as LanePosition;
+		let position = activePlayer?.position as LanePosition;
+		if (position === LanePosition.Support) {
+			position = LanePosition.Bot;
+		}
 
 		this.playerLane = activePlayer?.position.length > 0 ? position : lane;
-		if (this.playerLane) {
+		if (this.playerLane !== LanePosition.None) {
 			this.playerLaneIsSet = true;
 		}
 		console.log("SET LANE", this.playerLane, position);

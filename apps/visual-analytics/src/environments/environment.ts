@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	RIOT_LOL_API_KEY: "RGAPI-46c21d34-176d-4ca5-8848-24bb1b7e2dc3",
+	RIOT_LOL_API_KEY: "RGAPI-bf89127c-8393-425a-9199-48a0081db7b5",
 };
 
 /*

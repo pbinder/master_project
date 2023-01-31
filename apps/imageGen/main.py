@@ -14,9 +14,9 @@ python -m uvicorn main:app --reload
 
 app = FastAPI()
 
-screenWidth = 1920
-screenHeight = 1080
-minimapSize = 300
+screenWidth =  2560
+screenHeight = 1440
+minimapSize = 400
 
 conf = 0.2 # confidence
 iou = 0.4  # NMS IoU threshold
